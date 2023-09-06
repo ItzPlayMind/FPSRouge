@@ -1,5 +1,4 @@
 using KinematicCharacterController;
-using KinematicCharacterController.Examples;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -16,6 +15,7 @@ public class PlayerController : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
+        name = OwnerClientId.ToString();
         if (!IsOwner)
         {
             Destroy(playerVirtualCamera.gameObject);

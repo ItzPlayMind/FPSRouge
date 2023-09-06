@@ -22,7 +22,7 @@ public class InputManager : MonoBehaviour
 
     public enum ActionMap
     {
-        Movement, Camera
+        Movement, Camera, Combat
     }
 
     [SerializeField] private float bufferTime;
@@ -40,6 +40,8 @@ public class InputManager : MonoBehaviour
                 return playerControls.Movement.Get();
             case ActionMap.Camera:
                 return playerControls.Camera.Get();
+            case ActionMap.Combat:
+                return playerControls.Combat.Get();
         }
         return null;
     }
@@ -51,6 +53,9 @@ public class InputManager : MonoBehaviour
         if (action != null)
             return action;
         action = playerControls.Camera.Get().FindAction(name);
+        if (action != null)
+            return action;
+        action = playerControls.Combat.Get().FindAction(name);
         if (action != null)
             return action;
         return null;
@@ -105,8 +110,8 @@ public class InputManager : MonoBehaviour
     //public bool PlayerSprinting { get { return GetValueOrDefault(playerControls.Movement.Sprint, -1) > 0; } }
     public bool PlayerCrouchingHold { get; private set; }
 
-    //public bool PlayerShootTrigger { get { return GetValueOrDefault(playerControls.Combat.Shoot, -1) > 0; } }
-    //public bool PlayerShootHold { get; private set; }
+    public bool PlayerAttackTrigger { get { return GetValueOrDefault(playerControls.Combat.Attack, -1) > 0; } }
+    public bool PlayerAttackHold { get; private set; }
 
     private bool playerInteractTrigger;
     private bool playerInteractHold;
@@ -133,8 +138,8 @@ public class InputManager : MonoBehaviour
 
         playerControls.Movement.Crouch.started += (state) => PlayerCrouchingHold = true;
         playerControls.Movement.Crouch.canceled += (state) => PlayerCrouchingHold = false;
-        //playerControls.Combat.Shoot.started += (state) => PlayerShootHold = true;
-        //playerControls.Combat.Shoot.canceled += (state) => PlayerShootHold = false;
+        playerControls.Combat.Attack.started += (state) => PlayerAttackHold = true;
+        playerControls.Combat.Attack.canceled += (state) => PlayerAttackHold = false;
         //playerControls.Combat.Scope.started += (state) => AimDownSightsHold = true;
         //playerControls.Combat.Scope.canceled += (state) => AimDownSightsHold = false;
         //playerControls.Combat.Reload.started += (state) => PlayerReloadHold = true;
@@ -162,6 +167,7 @@ public class InputManager : MonoBehaviour
     {
         CheckForTriggerInActionMap(playerControls.Movement.Get());
         CheckForTriggerInActionMap(playerControls.Camera.Get());
+        CheckForTriggerInActionMap(playerControls.Combat.Get());
 
         List<InputAction> removeActions = new List<InputAction>();
 
