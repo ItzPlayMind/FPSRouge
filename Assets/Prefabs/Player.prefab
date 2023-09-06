@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5791365083749180327}
   - component: {fileID: 4973604560245763687}
   - component: {fileID: 2467938521483889593}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlayerCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 6470230664273034812}
   - component: {fileID: 5960659281735217666}
   - component: {fileID: 3080592111726530535}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -219,8 +219,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5521610639401611530}
-  m_Layer: 0
-  m_Name: Right Hand
+  - component: {fileID: 3557809848317247182}
+  m_Layer: 7
+  m_Name: Left Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -241,6 +242,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3376215153898241956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &3557809848317247182
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3113469277247618015}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2f9ccb5f61918d641b42dd388a9adbb5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3556810003498638302
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +281,8 @@ GameObject:
   - component: {fileID: 8897418862432118197}
   - component: {fileID: 5121287526809750592}
   - component: {fileID: 1495949308799400950}
-  m_Layer: 0
+  - component: {fileID: 746026607792193505}
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -312,9 +335,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9208f54dc4eb4f54b994ef325418b0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandWeapon: {fileID: 6009921105635539397, guid: a75ba0c08c337c14a8f8025df3646d9c,
+  leftHandWeapon: {fileID: 0}
+  rightHandWeapon: {fileID: 6009921105635539397, guid: a75ba0c08c337c14a8f8025df3646d9c,
     type: 3}
-  rightHandWeapon: {fileID: 0}
   hands: {fileID: 8778891713420677803}
 --- !u!136 &6480582150080419558
 CapsuleCollider:
@@ -504,6 +527,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &746026607792193505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556810003498638302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1671490b88e3f934db1cb1c036d4a09f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  debugHealthText: {fileID: 0}
+  currentHealth:
+    m_InternalValue: 0
 --- !u!1 &6330265976126753644
 GameObject:
   m_ObjectHideFlags: 0
@@ -515,7 +554,7 @@ GameObject:
   - component: {fileID: 4322681235967644224}
   - component: {fileID: 6926898008872350666}
   - component: {fileID: 4350514542088335155}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -598,7 +637,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3376215153898241956}
   - component: {fileID: 8778891713420677803}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -634,8 +673,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6775d4ece3186914bbb7dc2e73b091d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHandTransform: {fileID: 2043837069067398860}
-  rightHandTransform: {fileID: 5521610639401611530}
+  leftHandTransform: {fileID: 5521610639401611530}
+  rightHandTransform: {fileID: 2043837069067398860}
+  lefthandAnimator: {fileID: 3557809848317247182}
+  righthandAnimator: {fileID: 409663028359609965}
 --- !u!1 &6666179148705350432
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,8 +686,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2043837069067398860}
-  m_Layer: 0
-  m_Name: Left Hand
+  - component: {fileID: 409663028359609965}
+  m_Layer: 7
+  m_Name: Right Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -667,6 +709,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3376215153898241956}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &409663028359609965
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6666179148705350432}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2f9ccb5f61918d641b42dd388a9adbb5, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7303649817778603410
 GameObject:
   m_ObjectHideFlags: 0
@@ -678,7 +741,7 @@ GameObject:
   - component: {fileID: 2691006499847889544}
   - component: {fileID: 6081342637716614435}
   - component: {fileID: 8698209605352006961}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -759,7 +822,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7812954165977603322}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8287941298806950777}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -824,7 +887,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 405555968836920975}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Meshes
   m_TagString: Untagged
   m_Icon: {fileID: 0}

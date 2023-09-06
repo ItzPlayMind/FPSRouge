@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class WeaponManager : NetworkBehaviour
 {
-    [SerializeField] private Weapon leftHandWeapon;
-    [SerializeField] private Weapon rightHandWeapon;
+    [SerializeField] private Item leftHandWeapon;
+    [SerializeField] private Item rightHandWeapon;
     [SerializeField] private Hands hands;
 
     InputManager inputManager;
@@ -48,6 +48,8 @@ public class WeaponManager : NetworkBehaviour
     [ClientRpc]
     private void AttackClientRpc()
     {
-        leftHandWeapon.Attack(transform);
+        hands.RightHandAnimator.Play("Use");
+        if(IsOwner)
+            rightHandWeapon.Use(transform);
     }
 }
