@@ -42,14 +42,22 @@ public class PlayerStats : CharacterStats
         PlayerUI.Instance.SetStaminaBar(this.stamina / maxStamina);
     }
 
-    public bool TakeStamina(float amount)
+    public bool HasStamina(float amount)
     {
         if (!IsOwner)
             return false;
         if (amount > stamina)
             return false;
+        return true;
+    }
+
+    public void TakeStamina(float amount)
+    {
+        if (!IsOwner)
+            return;
+        if (!HasStamina(amount))
+            return;
         UpdateStamina(stamina - amount);
         staminaTimer = 1f;
-        return true;
     }
 }

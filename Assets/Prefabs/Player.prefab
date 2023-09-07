@@ -324,6 +324,10 @@ MonoBehaviour:
   disableIfNotOwner:
   - {fileID: 8974552807194928}
   - {fileID: 5504847609785367088}
+  interactableMask:
+    serializedVersion: 2
+    m_Bits: 256
+  interactRange: 5
 --- !u!114 &7347381207542970086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,8 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offHandItem: {fileID: 0}
-  mainHandItem: {fileID: 6009921105635539397, guid: a75ba0c08c337c14a8f8025df3646d9c,
-    type: 3}
+  mainHandItem: {fileID: 11400000, guid: faf4c1cd17857e2409bac17ade810da5, type: 2}
   hands: {fileID: 8778891713420677803}
   attackPoint: {fileID: 0}
 --- !u!114 &8401656592779491751
@@ -356,6 +359,8 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth:
     m_InternalValue: 0
+  maxStamina: 100
+  staminaRechargeRate: 20
 --- !u!136 &6480582150080419558
 CapsuleCollider:
   m_ObjectHideFlags: 8

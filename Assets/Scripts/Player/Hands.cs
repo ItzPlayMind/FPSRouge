@@ -49,6 +49,7 @@ public class Hands : MonoBehaviour
                     mainhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
         }
-        return Instantiate(obj, spot);
+        obj.Instantiate(spot);
+        return obj;
     }
 }

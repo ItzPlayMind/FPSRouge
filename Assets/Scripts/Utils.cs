@@ -10,5 +10,9 @@ public static class Utils
         return Mathf.Acos(Vector3.Dot(a, b) / (Vector3.Magnitude(a) * Vector3.Magnitude(b))) * Mathf.Rad2Deg;
     }
 
-
+    public static T Clone<T>(this T obj) where T: ScriptableObject
+    {
+        var script = GameObject.Instantiate(obj);
+        return script;
+    }
 }

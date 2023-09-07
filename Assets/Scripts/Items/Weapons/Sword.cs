@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "New Sword", menuName = "Items/Weapons/New Sword")]
 public class Sword : Weapon
 {
     protected override void _Attack(Transform usePoint, CharacterStats attacker)

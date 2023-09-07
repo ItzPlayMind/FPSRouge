@@ -15,6 +15,11 @@ public class WeaponManager : NetworkBehaviour
 
     private CharacterStats stats;
 
+    private float attackTimer = 0;
+
+    protected bool canUse = false;
+    public bool CanUse { get => canUse; }
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -24,9 +29,9 @@ public class WeaponManager : NetworkBehaviour
     private void Start()
     {
         if (offHandItem != null)
-            offHandItem = (Weapon)hands.Instantiate(offHandItem, Hands.Hand.Off);
+            offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off);
         if (mainHandItem != null)
-            mainHandItem = (Weapon)hands.Instantiate(mainHandItem, Hands.Hand.Main);
+            mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main);
         stats = GetComponent<CharacterStats>();
     }
 
@@ -41,8 +46,6 @@ public class WeaponManager : NetworkBehaviour
     {
         attackPoint = point;
     }
-
-    public bool CanUse { get => mainHandItem.CanUse; }
 
     public bool hasWeapon { get => mainHandItem is Weapon; }
 
@@ -69,12 +72,52 @@ public class WeaponManager : NetworkBehaviour
         return Vector3.Distance(target.position, attackPoint.position) <= (mainHandItem as Weapon).AttackRange;
     }
 
+    private void Update()
+    {
+        if (!IsOwner)
+            return;
+
+        if (attackTimer >= 0)
+            attackTimer -= Time.deltaTime;
+        else
+            canUse = true;
+    }
+
+    public void ChangeItem(Item item, Hands.Hand hand)
+    {
+        switch (hand)
+        {
+            case Hands.Hand.Main:
+                mainHandItem.Destroy();
+                mainHandItem = item;
+                hands.Instantiate(mainHandItem, hand);
+                break;
+            case Hands.Hand.Off:
+                offHandItem.Destroy();
+                offHandItem = item;
+                hands.Instantiate(offHandItem, hand);
+                break;
+        }
+    }
+
     public void Attack()
     {
         if (IsOwner)
         {
-            if(mainHandItem.Use(attackPoint, stats))
-                AttackServerRpc();
+            if (canUse)
+                if (mainHandItem.CanUse(stats))
+                {
+                    canUse = false;
+                    mainHandItem.Use(attackPoint, stats);
+                    if (mainHandItem is Weapon)
+                    {
+                        var weapon = (mainHandItem as Weapon);
+                        attackTimer = weapon.AttackSpeed; 
+                        if (stats is PlayerStats)
+                            (stats as PlayerStats).TakeStamina(weapon.StaminaUsage);
+                    }
+                    AttackServerRpc();
+                }
         }
     }
 

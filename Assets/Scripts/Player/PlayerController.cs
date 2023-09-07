@@ -8,6 +8,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private CharacterController character;
     [SerializeField] private Cinemachine.CinemachineVirtualCamera playerVirtualCamera;
     [SerializeField] private List<Behaviour> disableIfNotOwner = new List<Behaviour>();
+    [Header("Interact")]
+    [SerializeField] private LayerMask interactableMask;
+    [SerializeField] private float interactRange = 5f;
+
 
     private Camera playerCamera;
     private InputManager inputManager;
@@ -48,6 +52,38 @@ public class PlayerController : NetworkBehaviour
         
         HandleCharacterInput();
         HandleAttacking();
+        HandleInteract();
+    }
+
+    private void HandleInteract()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(playerCamera.transform.position,playerCamera.transform.forward, out hit, interactRange))
+        {
+            var cols = Physics.OverlapSphere(hit.point, 2f, interactableMask);
+            if (cols == null || cols.Length <= 0)
+                return;
+            float distance = float.MaxValue;
+            Interactable closest = null;
+            foreach (var item in cols)
+            {
+                var inter = item.GetComponent<Interactable>();
+                if (inter != null)
+                {
+                    float dist = Vector3.Distance(hit.point, inter.transform.position);
+                    if(dist < distance)
+                    {
+                        distance = dist;
+                        closest = inter;
+                    }
+                }
+            }
+            if (closest == null)
+                return;
+            closest.OnHover(this);
+            if (inputManager.PlayerInteractTrigger)
+                closest.Interact(this);
+        }
     }
 
     private void HandleAttacking()
