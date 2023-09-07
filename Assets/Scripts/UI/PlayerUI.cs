@@ -15,12 +15,11 @@ public class PlayerUI : MonoBehaviour
 
     public static PlayerUI Instance { get => instance; }
 
-    [SerializeField] private TMPro.TextMeshProUGUI debugHealthText;
+    [SerializeField] private UIBar healthBar;
+    [SerializeField] private UIBar staminaBar;
 
 
 
-    public void SetDebugHealthText(float value)
-    {
-        debugHealthText.text = "Health: " + value;
-    }
+    public void SetHealthBar(float value) => healthBar.SetBar(value);
+    public void SetStaminaBar(float value) => staminaBar.SetBar(value);
 }

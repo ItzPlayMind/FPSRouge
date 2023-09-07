@@ -6,6 +6,9 @@ public abstract class Item : MonoBehaviour
 {
     [SerializeField] private AnimatorOverrideController controller;
 
+    protected bool canUse = false;
+    public bool CanUse { get => canUse; }
+
     public AnimatorOverrideController AnimatorController { get => controller; }
-    public abstract void Use(Transform user);
+    public abstract bool Use(Transform usePoint, CharacterStats user);
 }

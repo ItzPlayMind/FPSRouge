@@ -11,6 +11,7 @@ public class PlayerController : NetworkBehaviour
 
     private Camera playerCamera;
     private InputManager inputManager;
+    private WeaponManager weaponManager;
 
     public override void OnNetworkSpawn()
     {
@@ -32,18 +33,30 @@ public class PlayerController : NetworkBehaviour
             return;
         }
         inputManager = InputManager.Instance;
-
         Cursor.lockState = CursorLockMode.Locked;
         playerCamera = Camera.main;
+        weaponManager = GetComponent<WeaponManager>();
+        weaponManager.SetHands(Camera.main.transform.Find("Hands")?.GetComponent<Hands>());
+        weaponManager.SetAttackPoint(playerCamera.transform);
 
     }
 
     private void Update()
     {
-        if (IsOwner)
-            HandleCharacterInput();
+        if (!IsOwner)
+            return;
+        
+        HandleCharacterInput();
+        HandleAttacking();
     }
 
+    private void HandleAttacking()
+    {
+        if (inputManager.PlayerAttackTrigger)
+        {
+            weaponManager?.Attack();
+        }
+    }
 
     private void HandleCharacterInput()
     {

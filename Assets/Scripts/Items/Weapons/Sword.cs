@@ -4,25 +4,23 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-    protected override void _Attack(Transform attacker)
+    protected override void _Attack(Transform usePoint, CharacterStats attacker)
     {
         //GetComponentInChildren<MeshRenderer>().material.color = Random.ColorHSV();
-        var target = GetRaycastTarget();
+        var target = GetRaycastTarget(usePoint);
         if (target == null)
-        {
-            Debug.Log("Hit nothing of value!");
             return;
-        }
-        target.TakeDamage(Damage);
+        target.TakeDamage(Damage,attacker.NetworkObjectId);
     }
 
-    private CharacterStats GetRaycastTarget()
+    private CharacterStats GetRaycastTarget(Transform usePoint)
     {
         RaycastHit hit;
-        if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, AttackRange))
+        if(Physics.Raycast(usePoint.transform.position, usePoint.transform.forward, out hit, AttackRange))
         {
             if(hit.transform != null)
             {
+                Debug.Log("Hit " + hit.transform.name);
                 return hit.transform.GetComponent<CharacterStats>();
             }
         }

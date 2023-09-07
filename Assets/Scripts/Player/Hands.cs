@@ -6,28 +6,28 @@ public class Hands : MonoBehaviour
 {
     public enum Hand
     {
-        Left, Right
+        Off, Main
     }
 
-    [SerializeField] private Transform leftHandTransform;
-    [SerializeField] private Transform rightHandTransform;
+    [SerializeField] private Transform offHandTransform;
+    [SerializeField] private Transform mainHandTransform;
 
-    [SerializeField] private Animator lefthandAnimator;
-    [SerializeField] private Animator righthandAnimator;
+    [SerializeField] private Animator offhandAnimator;
+    [SerializeField] private Animator mainhandAnimator;
 
-    public Animator LeftHandAnimator { get => lefthandAnimator; }
-    public Animator RightHandAnimator { get => righthandAnimator; }
+    public Animator OffHandAnimator { get => offhandAnimator; }
+    public Animator MainHandAnimator { get => mainhandAnimator; }
 
     public Object Instantiate(Object obj, Hand hand)
     {
         Transform spot = null;
         switch (hand)
         {
-            case Hand.Left:
-                spot = leftHandTransform;
+            case Hand.Off:
+                spot = offHandTransform;
                 break;
-            case Hand.Right:
-                spot = rightHandTransform;
+            case Hand.Main:
+                spot = mainHandTransform;
                 break;
         }
         return Instantiate(obj, spot);
@@ -38,15 +38,15 @@ public class Hands : MonoBehaviour
         Transform spot = null;
         switch (hand)
         {
-            case Hand.Left:
-                spot = leftHandTransform;
+            case Hand.Off:
+                spot = offHandTransform;
                 if (obj.AnimatorController != null)
-                    lefthandAnimator.runtimeAnimatorController = obj.AnimatorController;
+                    offhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
-            case Hand.Right:
-                spot = rightHandTransform;
+            case Hand.Main:
+                spot = mainHandTransform;
                 if (obj.AnimatorController != null)
-                    righthandAnimator.runtimeAnimatorController = obj.AnimatorController;
+                    mainhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
         }
         return Instantiate(obj, spot);

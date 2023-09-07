@@ -9,6 +9,10 @@ public class CharacterStats : NetworkBehaviour
 
     [SerializeField] private float maxHealth;
     public OnChangeValue<float> OnChangeMaxHealth;
+
+    public System.Action<float, ulong> OnTakeDamage;
+    public System.Action<float, ulong> OnHeal;
+
     public float MaxHealth
     {
         get
@@ -19,61 +23,59 @@ public class CharacterStats : NetworkBehaviour
         }
     }
 
-    [SerializeField] private TMPro.TextMeshProUGUI debugHealthText;
+    [SerializeField] protected NetworkVariable<float> currentHealth = new NetworkVariable<float>(0,NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
-    [SerializeField] private NetworkVariable<float> currentHealth = new NetworkVariable<float>(0,NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    protected NetworkObject networkObject;
 
     public bool isDead { get; private set; }
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
         if (!IsOwner)
             return;
-
+        networkObject = GetComponent<NetworkObject>();
         currentHealth.Value = MaxHealth;
-        currentHealth.OnValueChanged = (float oldValue, float newValue) =>
-        {
-            PlayerUI.Instance.SetDebugHealthText(newValue);
-        };
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, ulong netID)
     {
-        TakeDamageServerRpc(damage);
+        TakeDamageServerRpc(damage, netID);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void TakeDamageServerRpc(float damage)
+    private void TakeDamageServerRpc(float damage, ulong netID)
     {
-        TakeDamageClientRpc(damage);
+        TakeDamageClientRpc(damage, netID);
     }
 
     [ClientRpc]
-    private void TakeDamageClientRpc(float damage)
+    private void TakeDamageClientRpc(float damage, ulong netID)
     {
         if (!IsOwner)
             return;
         damage = Mathf.Max(damage, 0);
         currentHealth.Value = Mathf.Clamp(currentHealth.Value - damage, 0, MaxHealth);
+        OnTakeDamage?.Invoke(damage, netID);
         if (currentHealth.Value <= 0 && !isDead)
         {
             Die();
         }
     }
 
-    public void Heal(float health)
+    public void Heal(float health, ulong netID)
     {
-        HealServerRpc(health);
+        HealServerRpc(health, netID);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void HealServerRpc(float health)
+    private void HealServerRpc(float health, ulong netID)
     {
-        HealClientRpc(health);
+        HealClientRpc(health, netID);
     }
 
     [ClientRpc]
-    private void HealClientRpc(float health)
+    private void HealClientRpc(float health, ulong netID)
     {
         if (!IsOwner)
             return;
@@ -81,6 +83,7 @@ public class CharacterStats : NetworkBehaviour
             return;
         health = Mathf.Max(health, 0);
         currentHealth.Value = Mathf.Clamp(currentHealth.Value + health, 0, MaxHealth);
+        OnHeal?.Invoke(health, netID);
     }
 
     public virtual void Die()

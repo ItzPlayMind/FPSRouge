@@ -50,6 +50,7 @@ MonoBehaviour:
   damage: 10
   attackSpeed: 1
   attackRange: 5
+  staminaUsage: 20
 --- !u!1 &1308567060162867398
 GameObject:
   m_ObjectHideFlags: 0

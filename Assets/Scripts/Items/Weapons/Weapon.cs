@@ -7,7 +7,9 @@ public abstract class Weapon : Item
 {
     [SerializeField] private float damage;
     public OnChangeValue<float> OnChangeDamage;
-    public float Damage { get
+    public float Damage
+    {
+        get
         {
             float value = damage;
             OnChangeDamage?.Invoke(ref value);
@@ -39,29 +41,45 @@ public abstract class Weapon : Item
         }
     }
 
+    [SerializeField] private float staminaUsage;
+    public float StaminaUsage
+    {
+        get
+        {
+            return staminaUsage;
+        }
+    }
+
 
     private float attackTimer = 0;
 
-    public void Attack(Transform attacker)
+    public bool Attack(Transform usePoint, CharacterStats attacker)
     {
-        if(attackTimer <= 0)
+        if (attackTimer <= 0)
         {
-            _Attack(attacker);
+            if (attacker is PlayerStats && !(attacker as PlayerStats).TakeStamina(StaminaUsage))
+                return false;
+            canUse = false;
+            _Attack(usePoint, attacker);
             attackTimer = AttackSpeed;
+            return true;
         }
+        return false;
     }
 
     private void Update()
     {
         if (attackTimer > 0)
             attackTimer -= Time.deltaTime;
+        else
+            canUse = true;
     }
 
-    protected abstract void _Attack(Transform attacker);
+    protected abstract void _Attack(Transform usePoint, CharacterStats attacker);
 
-    public override void Use(Transform user)
+    public override bool Use(Transform usePoint, CharacterStats user)
     {
-        Attack(user);
+        return Attack(usePoint, user);
     }
 
 }

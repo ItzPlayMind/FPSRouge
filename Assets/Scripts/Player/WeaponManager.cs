@@ -5,37 +5,76 @@ using UnityEngine;
 
 public class WeaponManager : NetworkBehaviour
 {
-    [SerializeField] private Item leftHandWeapon;
-    [SerializeField] private Item rightHandWeapon;
+    [SerializeField] private Item offHandItem;
+    [SerializeField] private Item mainHandItem;
     [SerializeField] private Hands hands;
+    [SerializeField] private Transform attackPoint;
 
-    InputManager inputManager;
+
+    public Transform AttackPoint { get => attackPoint; }
+
+    private CharacterStats stats;
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        if (IsOwner)
-            hands = Camera.main.transform.Find("Hands")?.GetComponent<Hands>();
         hands.gameObject.SetActive(true);
     }
 
     private void Start()
     {
-        if (leftHandWeapon != null)
-            leftHandWeapon = (Weapon)hands.Instantiate(leftHandWeapon, Hands.Hand.Left);
-        if (rightHandWeapon != null)
-            rightHandWeapon = (Weapon)hands.Instantiate(rightHandWeapon, Hands.Hand.Right);
-        inputManager = InputManager.Instance;
+        if (offHandItem != null)
+            offHandItem = (Weapon)hands.Instantiate(offHandItem, Hands.Hand.Off);
+        if (mainHandItem != null)
+            mainHandItem = (Weapon)hands.Instantiate(mainHandItem, Hands.Hand.Main);
+        stats = GetComponent<CharacterStats>();
     }
 
-    private void Update()
+    public void SetHands(Hands hands)
     {
-        if (!IsOwner)
-            return;
+        this.hands?.gameObject?.SetActive(false);
+        this.hands = hands;
+        this.hands?.gameObject?.SetActive(true);
+    }
 
-        if(inputManager.PlayerAttackTrigger || inputManager.PlayerAttackHold)
+    public void SetAttackPoint(Transform point)
+    {
+        attackPoint = point;
+    }
+
+    public bool CanUse { get => mainHandItem.CanUse; }
+
+    public bool hasWeapon { get => mainHandItem is Weapon; }
+
+    public Weapon GetWeapon(Hands.Hand hand)
+    {
+        switch (hand)
         {
-            AttackServerRpc();
+            case Hands.Hand.Off:
+                if (offHandItem is Weapon)
+                    return offHandItem as Weapon;
+                break;
+            case Hands.Hand.Main:
+                if (mainHandItem is Weapon)
+                    return mainHandItem as Weapon;
+                break;
+        }
+        return null;
+    }
+
+    public bool IsInAttackRange(Transform target)
+    {
+        if (mainHandItem == null || mainHandItem is not Weapon)
+            return false;
+        return Vector3.Distance(target.position, attackPoint.position) <= (mainHandItem as Weapon).AttackRange;
+    }
+
+    public void Attack()
+    {
+        if (IsOwner)
+        {
+            if(mainHandItem.Use(attackPoint, stats))
+                AttackServerRpc();
         }
     }
 
@@ -48,8 +87,6 @@ public class WeaponManager : NetworkBehaviour
     [ClientRpc]
     private void AttackClientRpc()
     {
-        hands.RightHandAnimator.Play("Use");
-        if(IsOwner)
-            rightHandWeapon.Use(transform);
+        hands.MainHandAnimator.Play("Use");
     }
 }
