@@ -35,6 +35,18 @@ public class WeaponManager : NetworkBehaviour
         stats = GetComponent<CharacterStats>();
     }
 
+    public Item GetItem(Hands.Hand hand)
+    {
+        switch (hand)
+        {
+            case Hands.Hand.Main:
+                return mainHandItem;
+            case Hands.Hand.Off:
+                return offHandItem;
+        }
+        return null;
+    }
+
     public void SetHands(Hands hands)
     {
         this.hands?.gameObject?.SetActive(false);
@@ -120,6 +132,23 @@ public class WeaponManager : NetworkBehaviour
                 }
         }
     }
+
+    public void ApplyItemToItemDrop(Hands.Hand hand, ulong id)
+    {
+        ApplyItemToItemDropClientRpc(hand, id);
+    }
+
+    [ClientRpc]
+    public void ApplyItemToItemDropClientRpc(Hands.Hand hand, ulong id)
+    {
+        var obj = GetNetworkObject(id).GetComponent<ItemDrop>();
+        if(obj != null)
+        {
+            obj.SetItem(GetItem(hand).Clone());
+            obj.Setup();
+        }
+    }
+
 
     [ServerRpc]
     private void AttackServerRpc()

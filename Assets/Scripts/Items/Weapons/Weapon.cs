@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using static Utils;
 
@@ -66,5 +67,4 @@ public abstract class Weapon : Item
     {
         Attack(usePoint, user);
     }
-
 }

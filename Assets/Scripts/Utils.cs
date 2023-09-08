@@ -13,6 +13,7 @@ public static class Utils
     public static T Clone<T>(this T obj) where T: ScriptableObject
     {
         var script = GameObject.Instantiate(obj);
+        script.name = obj.name;
         return script;
     }
 }

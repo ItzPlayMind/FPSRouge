@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public abstract class Item : ScriptableObject
@@ -18,6 +19,8 @@ public abstract class Item : ScriptableObject
 
     public GameObject Instantiate(Transform transform)
     {
+        if (activeGameObject != null)
+            Destroy(activeGameObject);
         activeGameObject = GameObject.Instantiate(gfx, transform);
         return activeGameObject;
     }
