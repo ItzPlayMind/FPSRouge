@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public static class Utils
@@ -16,4 +17,9 @@ public static class Utils
         script.name = obj.name;
         return script;
     }
+
+    public static ClientRpcParams GetSendClientList(params ulong[] ids)
+    {
+        return new ClientRpcParams { Send = new ClientRpcSendParams { TargetClientIds = ids } };
+    } 
 }

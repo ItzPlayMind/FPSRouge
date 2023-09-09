@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fee002c44554ab47970fd9af4d2d442, type: 3}
+  m_Name: Bow
+  m_EditorClassIdentifier: 
+  gfx: {fileID: 5340853586808930193, guid: a802548cf82329e47a54b9036758b35b, type: 3}
+  controller: {fileID: 22100000, guid: 5e57de85a420e7649a60a7032f582875, type: 2}
+  damage: 15
+  attackSpeed: 1
+  attackRange: 15
+  staminaUsage: 10
+  projectile: {fileID: 5030038378445256666, guid: 88eb8c02fd339ca4c8bf6184a18224b5,
+    type: 3}
+  force: 50
