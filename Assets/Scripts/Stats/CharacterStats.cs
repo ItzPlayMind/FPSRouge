@@ -36,7 +36,10 @@ public class CharacterStats : NetworkBehaviour
             return;
         networkObject = GetComponent<NetworkObject>();
         currentHealth.Value = MaxHealth;
+        _OnNetworkSpawn();
     }
+
+    protected virtual void _OnNetworkSpawn() { }
 
     public void TakeDamage(float damage, ulong netID)
     {

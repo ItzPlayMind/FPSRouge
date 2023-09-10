@@ -114,11 +114,11 @@ public class InputManager : MonoBehaviour
     public bool PlayerAttackTrigger { get { return GetValueOrDefault(playerControls.Combat.Attack, -1) > 0; } }
     public bool PlayerAttackHold { get; private set; }
 
-    private bool playerInteractTrigger = true;
-    //private bool playerInteractHold= true;
+    private bool playerInteractTrigger;
+    private bool playerInteractHold;
 
     public bool PlayerInteractTrigger { get => playerInteractTrigger && playerControls.Camera.Interact.triggered; }
-    //public bool PlayerInteractHold { get => playerInteractHold && playerControls.Camera.Interact.triggered; }
+    public bool PlayerInteractHold { get => playerInteractHold && playerControls.Camera.Interact.triggered; }
     //public bool PlayerInventoryTrigger { get => playerControls.Additional.Inventory.triggered; }
     //public bool PlayerMenuTrigger { get => playerControls.Additional.Menu.triggered; }
 
@@ -145,11 +145,11 @@ public class InputManager : MonoBehaviour
         //playerControls.Combat.Scope.canceled += (state) => AimDownSightsHold = false;
         //playerControls.Combat.Reload.started += (state) => PlayerReloadHold = true;
         //playerControls.Combat.Reload.canceled += (state) => PlayerReloadHold = false;
-        //playerControls.Camera.Interact.performed += (state) =>
-        //{
-        //    playerInteractHold = state.interaction is HoldInteraction;
-        //    playerInteractTrigger = state.interaction is TapInteraction;
-        //};
+        playerControls.Camera.Interact.performed += (state) =>
+        {
+            playerInteractHold = state.interaction is HoldInteraction;
+            playerInteractTrigger = state.interaction is TapInteraction;
+        };
         //AddToSave(this);
     }
 

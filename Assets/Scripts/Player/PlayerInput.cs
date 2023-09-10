@@ -174,7 +174,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b5a3a37a-ddb8-46b2-a43c-a9d5a87837e8"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
+                    ""interactions"": ""Hold,Tap"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",

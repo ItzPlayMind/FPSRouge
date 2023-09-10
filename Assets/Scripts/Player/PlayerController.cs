@@ -55,34 +55,64 @@ public class PlayerController : NetworkBehaviour
         HandleInteract();
     }
 
+    private Interactable lastInteractable = null;
+
     private void HandleInteract()
     {
         RaycastHit hit;
         if(Physics.Raycast(playerCamera.transform.position,playerCamera.transform.forward, out hit, interactRange))
         {
             var cols = Physics.OverlapSphere(hit.point, 2f, interactableMask);
-            if (cols == null || cols.Length <= 0)
-                return;
             float distance = float.MaxValue;
             Interactable closest = null;
-            foreach (var item in cols)
+            if (cols != null && cols.Length > 0)
             {
-                var inter = item.GetComponent<Interactable>();
-                if (inter != null)
+                foreach (var item in cols)
                 {
-                    float dist = Vector3.Distance(hit.point, inter.transform.position);
-                    if(dist < distance)
+                    var inter = item.GetComponent<Interactable>();
+                    if (inter != null)
                     {
-                        distance = dist;
-                        closest = inter;
+                        float dist = Vector3.Distance(hit.point, inter.transform.position);
+                        if (dist < distance)
+                        {
+                            distance = dist;
+                            closest = inter;
+                        }
                     }
                 }
             }
             if (closest == null)
-                return;
-            closest.OnHover(this);
-            if (inputManager.PlayerInteractTrigger)
-                closest.Interact(this);
+            {
+                lastInteractable?.OnHoverEnd(this);
+            }
+            else
+            {
+                if (lastInteractable != closest)
+                {
+                    lastInteractable?.OnHoverEnd(this);
+                    closest.OnHoverStart(this);
+                }
+                closest.OnHover(this);
+                if (inputManager.PlayerInteractHold)
+                {
+                    closest.Interact(this, Interactable.InteractionType.Secondary);
+                    closest = null;
+                }
+                if (inputManager.PlayerInteractTrigger)
+                {
+                    closest.Interact(this, Interactable.InteractionType.Primary);
+                    closest = null;
+                }
+            }
+            lastInteractable = closest;
+        }
+        else
+        {
+            if(lastInteractable != null)
+            {
+                lastInteractable?.OnHoverEnd(this);
+                lastInteractable = null;
+            }
         }
     }
 

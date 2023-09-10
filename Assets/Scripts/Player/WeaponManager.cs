@@ -100,12 +100,12 @@ public class WeaponManager : NetworkBehaviour
         switch (hand)
         {
             case Hands.Hand.Main:
-                mainHandItem.Destroy();
+                mainHandItem?.Destroy();
                 mainHandItem = item;
                 hands.Instantiate(mainHandItem, hand);
                 break;
             case Hands.Hand.Off:
-                offHandItem.Destroy();
+                offHandItem?.Destroy();
                 offHandItem = item;
                 hands.Instantiate(offHandItem, hand);
                 break;
@@ -130,22 +130,6 @@ public class WeaponManager : NetworkBehaviour
                     }
                     AttackServerRpc();
                 }
-        }
-    }
-
-    public void ApplyItemToItemDrop(Hands.Hand hand, ulong id)
-    {
-        ApplyItemToItemDropClientRpc(hand, id);
-    }
-
-    [ClientRpc]
-    public void ApplyItemToItemDropClientRpc(Hands.Hand hand, ulong id)
-    {
-        var obj = GetNetworkObject(id).GetComponent<ItemDrop>();
-        if(obj != null)
-        {
-            obj.SetItem(GetItem(hand).Clone());
-            obj.Setup();
         }
     }
 

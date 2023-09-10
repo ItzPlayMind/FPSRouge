@@ -13,11 +13,15 @@ public class RangedWeapon : Weapon
         SpawnManager.Instance.SpawnProjectile(attacker.NetworkObjectId, usePoint.position, usePoint.forward, force);
     }
 
-    public virtual void OnProjectileSpawned(Projectile projectile)
+    public virtual void OnProjectileSpawned(ulong spawnerID, Projectile projectile)
     {
-        projectile.OnTargetHit += (target) =>
+        projectile.OnTargetHit += (GameObject target) =>
         {
-            Debug.Log(target.name + " was hit!");
+            CharacterStats stats = target.GetComponent<CharacterStats>();
+            if(stats != null)
+            {
+                stats.TakeDamage(Damage, spawnerID);
+            }
         };
     }
 

@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEditor;
 using UnityEngine;
 
 public abstract class Item : ScriptableObject
 {
+    public string UID { get
+        {
+            return name.ToLower().Replace(" ", "_");
+        }
+    }
+
     [SerializeField] private GameObject gfx;
     [SerializeField] private AnimatorOverrideController controller;
 

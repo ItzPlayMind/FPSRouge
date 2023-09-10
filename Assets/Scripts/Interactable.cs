@@ -5,6 +5,11 @@ using UnityEngine;
 
 public abstract class Interactable : NetworkBehaviour
 {
+    public enum InteractionType
+    {
+        Primary, Secondary
+    }
+
     private NetworkObject networkObject;
 
     public override void OnNetworkSpawn()
@@ -15,8 +20,11 @@ public abstract class Interactable : NetworkBehaviour
 
     protected void Destroy() { if (IsOwner) networkObject.Despawn(); }
 
-    public abstract void Interact(PlayerController player);
+    public abstract void Interact(PlayerController player, InteractionType type);
 
     public abstract void OnHover(PlayerController player);
+
+    public abstract void OnHoverStart(PlayerController player); 
+    public abstract void OnHoverEnd(PlayerController player);
 
 }
