@@ -53,7 +53,7 @@ public abstract class Weapon : Item
 
     public override bool CanUse(CharacterStats user)
     {
-        return user is PlayerStats && (user as PlayerStats).HasStamina(StaminaUsage);
+        return (user is PlayerStats && (user as PlayerStats).HasStamina(StaminaUsage)) || user is not PlayerStats;
     }
 
     public void Attack(Transform usePoint, CharacterStats attacker)
