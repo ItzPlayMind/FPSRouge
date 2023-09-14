@@ -12,6 +12,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private LayerMask interactableMask;
     [SerializeField] private float interactRange = 5f;
 
+    private KinematicCharacterMotor motor;
 
     private Camera playerCamera;
     private InputManager inputManager;
@@ -26,30 +27,31 @@ public class PlayerController : NetworkBehaviour
             Destroy(playerVirtualCamera.gameObject);
             foreach (var item in disableIfNotOwner)
                 item.enabled = false;
-        }
-        else
-            playerVirtualCamera.transform.parent = null;
-    }
 
-    private void Start()
-    {
-        if (!IsOwner) {
+            weaponManager = GetComponent<WeaponManager>();
+            weaponManager.SetupHands();
             return;
         }
+        playerVirtualCamera.transform.parent = null;
+
         inputManager = InputManager.Instance;
         Cursor.lockState = CursorLockMode.Locked;
         playerCamera = Camera.main;
         weaponManager = GetComponent<WeaponManager>();
         weaponManager.SetHands(Camera.main.transform.Find("Hands")?.GetComponent<Hands>());
         weaponManager.SetAttackPoint(playerCamera.transform);
+        weaponManager.SetupHands();
+        motor = GetComponent<KinematicCharacterMotor>();
 
+        motor.SetPosition(PlayerSpawn.Instance.transform.position+new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f)));
+        motor.SetRotation(PlayerSpawn.Instance.transform.rotation);
     }
 
     private void Update()
     {
         if (!IsOwner)
             return;
-        
+
         HandleCharacterInput();
         HandleAttacking();
         HandleInteract();
@@ -60,7 +62,7 @@ public class PlayerController : NetworkBehaviour
     private void HandleInteract()
     {
         RaycastHit hit;
-        if(Physics.Raycast(playerCamera.transform.position,playerCamera.transform.forward, out hit, interactRange))
+        if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, interactRange))
         {
             var cols = Physics.OverlapSphere(hit.point, 2f, interactableMask);
             float distance = float.MaxValue;
@@ -108,7 +110,7 @@ public class PlayerController : NetworkBehaviour
         }
         else
         {
-            if(lastInteractable != null)
+            if (lastInteractable != null)
             {
                 lastInteractable?.OnHoverEnd(this);
                 lastInteractable = null;

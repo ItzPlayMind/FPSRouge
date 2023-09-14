@@ -7,11 +7,11 @@ public abstract class Objective : NetworkBehaviour
 {
     public System.Action OnComplete;
 
-    public NetworkVariable<bool> Finished { get; private set; } = new NetworkVariable<bool>(false);
+    public bool Finished { get; private set; }
 
     public void Complete()
     {
-        Finished.Value = true;
+        Finished = true;
         OnComplete?.Invoke();
     }
 

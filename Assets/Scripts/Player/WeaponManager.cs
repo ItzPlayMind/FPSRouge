@@ -23,16 +23,16 @@ public class WeaponManager : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
-        hands.gameObject.SetActive(true);
+        stats = GetComponent<CharacterStats>();
     }
 
-    private void Start()
+    public void SetupHands()
     {
+        hands.gameObject.SetActive(true);
         if (offHandItem != null)
             offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off);
         if (mainHandItem != null)
             mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main);
-        stats = GetComponent<CharacterStats>();
     }
 
     public Item GetItem(Hands.Hand hand)

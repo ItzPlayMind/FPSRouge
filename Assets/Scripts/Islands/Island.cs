@@ -10,6 +10,8 @@ public class Island : NetworkBehaviour
     public bool Complete { get; private set; }
     public Island Next { get; private set; }
 
+    [SerializeField] private bool spawnPlayers;
+
     [SerializeField] private GameObject portal;
 
     [SerializeField] private List<Objective> objectives = new List<Objective>();
@@ -49,6 +51,11 @@ public class Island : NetworkBehaviour
     private void SetupServerRpc(int[] objectives)
     {
         SetupClientRpc(objectives);
+        if(spawnPlayers)
+            SceneManager.Instance.OnLoadComplete = () =>
+            {
+                PlayerSpawn.Instance.Spawn();
+            };
     }
 
     [ClientRpc]
@@ -58,7 +65,6 @@ public class Island : NetworkBehaviour
         {
             if (objectives.Contains(i))
             {
-                Debug.Log(this.objectives[i].name);
                 currentObjectives.Add(this.objectives[objectives[i]]);
                 currentObjectives[i].OnComplete += OnObjectiveComplete;
                 currentObjectives[i].Setup();
