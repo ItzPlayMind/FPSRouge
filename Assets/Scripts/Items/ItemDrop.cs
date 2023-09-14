@@ -58,7 +58,7 @@ public class ItemDrop : Interactable
             hand = Hands.Hand.Off;
         var item = player.GetComponent<WeaponManager>().GetItem(hand);
         if(item != null)
-            SpawnManager.Instance.SpawnItemDrop(item.UID, player.transform.position + Vector3.up, player.transform.forward, 10);
+            SpawnManager.Instance.SpawnItemDrop(item.UID(), player.transform.position + Vector3.up, player.transform.forward, 10);
         PickupServerRpc(player.NetworkObjectId, hand);
     }
 

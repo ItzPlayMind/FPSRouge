@@ -15,7 +15,7 @@ public class EnemyStats : CharacterStats
     public override void Die()
     {
         base.Die();
-        SpawnManager.Instance.SpawnItemDrop(manager.GetItem(Hands.Hand.Main).UID, transform.position + Vector3.up);
+        SpawnManager.Instance.SpawnItemDrop(manager.GetItem(Hands.Hand.Main).UID(), transform.position + Vector3.up);
         networkObject?.Despawn(true);
     }
 }

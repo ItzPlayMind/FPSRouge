@@ -6,12 +6,6 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject
 {
-    public string UID { get
-        {
-            return name.ToLower().Replace(" ", "_");
-        }
-    }
-
     [SerializeField] private GameObject gfx;
     [SerializeField] private AnimatorOverrideController controller;
 
