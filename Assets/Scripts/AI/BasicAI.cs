@@ -29,7 +29,7 @@ public class BasicAI : NetworkBehaviour
         base.OnNetworkSpawn(); 
         agent = GetComponent<NavMeshAgent>();
         weaponManager = GetComponent<WeaponManager>();
-
+        weaponManager.SetupHands();
         if (!IsOwner)
             return;
 

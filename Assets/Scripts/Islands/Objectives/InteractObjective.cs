@@ -17,7 +17,7 @@ public class InteractObjective : Objective
 
     private void OnInteracted()
     {
-        if (Finished.Value)
+        if (Finished)
             return;
         OnInteractedServerRpc();
     }

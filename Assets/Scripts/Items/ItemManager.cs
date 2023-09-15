@@ -20,7 +20,7 @@ public class ItemManager : MonoBehaviour
 
     public Item GetItem(string uid)
     {
-        return items.Find(x => x.UID == uid);
+        return items.Find(x => x.UID() == uid);
     }
 
     public Item GetRandomItem()

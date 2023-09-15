@@ -17,6 +17,8 @@ public class ItemDrop : Interactable
 
     public void SetItem(Item item) => this.item = item;
 
+    private bool pickedUp = false;
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -50,12 +52,13 @@ public class ItemDrop : Interactable
 
     public override void Interact(PlayerController player, InteractionType type)
     {
+        pickedUp = true;
         Hands.Hand hand = Hands.Hand.Main;
         if (type == InteractionType.Secondary)
             hand = Hands.Hand.Off;
         var item = player.GetComponent<WeaponManager>().GetItem(hand);
         if(item != null)
-            SpawnManager.Instance.SpawnItemDrop(item.UID, player.transform.position + Vector3.up, player.transform.forward, 10);
+            SpawnManager.Instance.SpawnItemDrop(item.UID(), player.transform.position + Vector3.up, player.transform.forward, 10);
         PickupServerRpc(player.NetworkObjectId, hand);
     }
 
@@ -87,11 +90,13 @@ public class ItemDrop : Interactable
 
     public override void OnHoverStart(PlayerController player)
     {
-        ui?.SetActive(true);
+        if(!pickedUp)
+            ui?.SetActive(true);
     }
 
     public override void OnHoverEnd(PlayerController player)
     {
-        ui?.SetActive(false);
+        if(!pickedUp)
+            ui?.SetActive(false);
     }
 }
