@@ -9,7 +9,7 @@ public class WeaponManager : NetworkBehaviour
     [SerializeField] private Item mainHandItem;
     [SerializeField] private Hands hands;
     [SerializeField] private Transform attackPoint;
-
+    [SerializeField] private bool overrideAnimators = true;
 
     public Transform AttackPoint { get => attackPoint; }
 
@@ -30,9 +30,9 @@ public class WeaponManager : NetworkBehaviour
     {
         hands.gameObject.SetActive(true);
         if (offHandItem != null)
-            offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off);
+            offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off, overrideAnimators);
         if (mainHandItem != null)
-            mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main);
+            mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main, overrideAnimators);
     }
 
     public Item GetItem(Hands.Hand hand)

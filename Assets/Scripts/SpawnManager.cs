@@ -18,8 +18,53 @@ public class SpawnManager : NetworkBehaviour
     public static SpawnManager Instance { get => instance; }
 
     [SerializeField] private ItemDrop itemdrop;
+    [SerializeField] private MaterialDrop materialDrop;
 
-    public void SpawnItemDrop(string itemUid, Vector3 position, Vector3 dir = default, float force = 0)
+    public void Spawn<T>(string uid, Vector3 position, Vector3 dir = default, float force = 0)
+    {
+        var type = typeof(T);
+        if (type == typeof(Item))
+            SpawnItemDrop(uid, position, dir, force);
+        if (type == typeof(Material))
+            SpawnMaterialDrop(uid, position, dir, force);
+    }
+
+    public void Spawn<T>(T item, Vector3 position, Vector3 dir = default, float force = 0)
+    {
+        if (item is Item)
+            SpawnItemDrop((item as Item).UID(), position, dir, force);
+        if (item is Material)
+            SpawnMaterialDrop((item as Material).UID(), position, dir, force);
+    }
+
+    private void SpawnMaterialDrop(string materialUid, Vector3 position, Vector3 dir = default, float force = 0)
+    {
+        SpawnMaterialDropServerRpc(materialUid, position, dir, force);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnMaterialDropServerRpc(string materialUid, Vector3 pos, Vector3 dir, float force)
+    {
+        var drop = Instantiate(materialDrop, pos, Quaternion.identity);
+        drop.GetComponent<NetworkObject>()?.Spawn();
+        drop.GetComponent<Rigidbody>()?.AddForce(dir * force, ForceMode.Impulse);
+        ApplyMaterialToMaterialDropClientRpc(drop.NetworkObjectId, materialUid);
+    }
+
+    [ClientRpc]
+    private void ApplyMaterialToMaterialDropClientRpc(ulong dropId, string materialUid)
+    {
+        var obj = GetNetworkObject(dropId).GetComponent<MaterialDrop>();
+        if (obj != null)
+        {
+            var material = ScriptableObjectManager.Instance.Get<Material>(materialUid).Clone();
+            Debug.Log(material.UID());
+            obj.SetMaterial(material);
+            obj.Setup();
+        }
+    }
+
+    private void SpawnItemDrop(string itemUid, Vector3 position, Vector3 dir = default, float force = 0)
     {
         SpawnItemDropServerRpc(itemUid, position, dir, force);
     }
@@ -40,7 +85,7 @@ public class SpawnManager : NetworkBehaviour
         var obj = GetNetworkObject(dropId).GetComponent<ItemDrop>();
         if (obj != null)
         {
-            obj.SetItem(ItemManager.Instance.GetItem(itemUid).Clone());
+            obj.SetItem(ScriptableObjectManager.Instance.Get<Item>(itemUid).Clone());
             obj.Setup();
         }
     }

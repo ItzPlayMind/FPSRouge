@@ -12,10 +12,8 @@ public class Hands : MonoBehaviour
     [SerializeField] private Transform offHandTransform;
     [SerializeField] private Transform mainHandTransform;
 
-    [SerializeField] private Animator offhandAnimator;
     [SerializeField] private Animator mainhandAnimator;
 
-    public Animator OffHandAnimator { get => offhandAnimator; }
     public Animator MainHandAnimator { get => mainhandAnimator; }
 
     public Object Instantiate(Object obj, Hand hand)
@@ -33,19 +31,17 @@ public class Hands : MonoBehaviour
         return Instantiate(obj, spot);
     }
 
-    public Item Instantiate(Item obj, Hand hand)
+    public Item Instantiate(Item obj, Hand hand, bool overrideAnimators = true)
     {
         Transform spot = null;
         switch (hand)
         {
             case Hand.Off:
                 spot = offHandTransform;
-                if (obj.AnimatorController != null)
-                    offhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
             case Hand.Main:
                 spot = mainHandTransform;
-                if (obj.AnimatorController != null)
+                if (obj.AnimatorController != null && overrideAnimators)
                     mainhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
         }
