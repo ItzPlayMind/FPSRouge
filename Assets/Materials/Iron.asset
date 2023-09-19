@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f67935e38e2b0240a23eefd181844d9, type: 3}
+  m_Name: Iron
+  m_EditorClassIdentifier: 
+  description: Basic metal. Nothing wrong with it.
+  gfx: {fileID: 430205738872698252, guid: 84e2f25f3b928a4478097b8ee559d184, type: 3}

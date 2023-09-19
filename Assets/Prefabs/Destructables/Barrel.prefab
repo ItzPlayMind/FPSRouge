@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8442742224044074224}
   - component: {fileID: 2077490941016184488}
   - component: {fileID: 5791624546536937758}
+  - component: {fileID: 4999548529543957539}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -30,13 +31,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5613587462577664253}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -36.953106, y: 2.7850256, z: -0.149822}
   m_LocalScale: {x: 0.1642618, y: 0.74756134, z: 0.16426185}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &5292573233027296859
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -116,6 +117,21 @@ MonoBehaviour:
   maxHealth: 50
   currentHealth:
     m_InternalValue: 0
+  OnDie:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4999548529543957539}
+        m_TargetAssemblyTypeName: Spawner, Assembly-CSharp
+        m_MethodName: Spawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2077490941016184488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -158,3 +174,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8108563764783910780, guid: c0c5ca8509b6b614e97512c401bea9a7, type: 3}
+--- !u!114 &4999548529543957539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5613587462577664253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a832785290d2be34dbca3dd4abb1db77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemCount:
+    min: 1
+    max: 3
+  lootTable: {fileID: 11400000, guid: a2e3cd5c9ca0067479d49dcff5094740, type: 2}
