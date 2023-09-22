@@ -11,10 +11,11 @@ public class Hands : MonoBehaviour
 
     [SerializeField] private Transform offHandTransform;
     [SerializeField] private Transform mainHandTransform;
-
+    [SerializeField] private AnimationEventSender attackEventSender;
     [SerializeField] private Animator mainhandAnimator;
 
     public Animator MainHandAnimator { get => mainhandAnimator; }
+    public AnimationEventSender AttackEventSender { get => attackEventSender; }
 
     public Object Instantiate(Object obj, Hand hand)
     {

@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.AI;
 using System.Linq;
+using Unity.Netcode.Components;
 
 public class BasicAI : NetworkBehaviour
 {
@@ -17,6 +18,7 @@ public class BasicAI : NetworkBehaviour
     [SerializeField] private LayerMask searchMask;
     [SerializeField] private NetworkVariable<State> state = new NetworkVariable<State>(State.Idle);
     [SerializeField] private Transform target = null;
+    [SerializeField] private Animator animator;
 
     private NavMeshAgent agent;
     private WeaponManager weaponManager;
@@ -91,6 +93,7 @@ public class BasicAI : NetworkBehaviour
             ChangeState(State.Idle);
             return;
         }
+        animator.SetFloat("SpeedZ", agent.velocity.magnitude);
         agent.stoppingDistance = weaponManager.GetWeapon(Hands.Hand.Main).AttackRange-0.5f;
         agent.SetDestination(target.position);
         if (weaponManager.IsInAttackRange(target))
@@ -108,6 +111,13 @@ public class BasicAI : NetworkBehaviour
         }
         if (weaponManager.CanUse)
         {
+            if (!weaponManager.IsInAttackRange(target))
+            {
+                ChangeState(State.Pathing);
+                return;
+            }
+            animator.SetFloat("SpeedZ", 0);
+            agent.SetDestination(transform.position);
             Vector3 dir = (target.transform.position - transform.position).normalized;
             if (Mathf.Abs(Utils.AngleBetween(weaponManager.AttackPoint.forward, dir)) <= attackAngle)
             {
@@ -117,10 +127,6 @@ public class BasicAI : NetworkBehaviour
             {
                 transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.01f);
             }
-        }
-        if (!weaponManager.IsInAttackRange(target))
-        {
-            ChangeState(State.Pathing);
         }
     }
     

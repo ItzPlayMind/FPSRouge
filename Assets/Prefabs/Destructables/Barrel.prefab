@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2077490941016184488}
   - component: {fileID: 5791624546536937758}
   - component: {fileID: 4999548529543957539}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,23 +115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50
-  currentHealth:
-    m_InternalValue: 0
   OnDie:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4999548529543957539}
-        m_TargetAssemblyTypeName: Spawner, Assembly-CSharp
-        m_MethodName: Spawn
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &2077490941016184488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,3 +176,7 @@ MonoBehaviour:
     min: 1
     max: 3
   lootTable: {fileID: 11400000, guid: a2e3cd5c9ca0067479d49dcff5094740, type: 2}
+  force: 5
+  forceRange:
+    min: {x: -0.5, y: 1, z: -0.5}
+    max: {x: 0.5, y: 1, z: 0.5}

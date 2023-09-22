@@ -12,6 +12,8 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private LayerMask interactableMask;
     [SerializeField] private float interactRange = 5f;
 
+    [SerializeField] private Animator animator;
+
     private KinematicCharacterMotor motor;
 
     private Camera playerCamera;
@@ -32,6 +34,9 @@ public class PlayerController : NetworkBehaviour
             weaponManager.SetupHands();
             return;
         }
+        //animator.gameObject.SetActive(false);
+        for (int i = 0; i < animator.transform.childCount; i++)
+            animator.transform.GetChild(i).gameObject.SetActive(false);
         playerVirtualCamera.transform.parent = null;
 
         inputManager = InputManager.Instance;
@@ -55,6 +60,9 @@ public class PlayerController : NetworkBehaviour
         HandleCharacterInput();
         HandleAttacking();
         HandleInteract();
+
+        animator.SetFloat("SpeedX", motor.Velocity.x);
+        animator.SetFloat("SpeedZ", -motor.Velocity.z);
     }
 
     private Interactable lastInteractable = null;
@@ -137,6 +145,9 @@ public class PlayerController : NetworkBehaviour
         characterInputs.JumpDown = inputManager.PlayerJumpedThisFrame;
         characterInputs.CrouchDown = inputManager.PlayerCrouchingHold;
         characterInputs.CrouchUp = !inputManager.PlayerCrouchingHold;
+
+        if (characterInputs.JumpDown)
+            animator.Play("Jump");
 
         // Apply inputs to character
         character.SetInputs(ref characterInputs);

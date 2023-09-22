@@ -20,6 +20,7 @@ public class WeaponManager : NetworkBehaviour
     protected bool canUse = false;
     public bool CanUse { get => canUse; }
 
+
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -33,6 +34,11 @@ public class WeaponManager : NetworkBehaviour
             offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off, overrideAnimators);
         if (mainHandItem != null)
             mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main, overrideAnimators);
+        if(IsOwner)
+            hands.AttackEventSender.OnAnimationEvent = () =>
+            {
+                mainHandItem.Use(attackPoint, stats);
+            };
     }
 
     public Item GetItem(Hands.Hand hand)
@@ -120,7 +126,6 @@ public class WeaponManager : NetworkBehaviour
                 if (mainHandItem.CanUse(stats))
                 {
                     canUse = false;
-                    mainHandItem.Use(attackPoint, stats);
                     if (mainHandItem is Weapon)
                     {
                         var weapon = (mainHandItem as Weapon);
@@ -128,6 +133,7 @@ public class WeaponManager : NetworkBehaviour
                         if (stats is PlayerStats)
                             (stats as PlayerStats).TakeStamina(weapon.StaminaUsage);
                     }
+                    hands.MainHandAnimator.Play("UseOwner");
                     AttackServerRpc();
                 }
         }
@@ -143,6 +149,8 @@ public class WeaponManager : NetworkBehaviour
     [ClientRpc]
     private void AttackClientRpc()
     {
-        hands.MainHandAnimator.Play("Use");
+        if (IsOwner)
+            return;
+        hands.MainHandAnimator.Play("UseClient");
     }
 }

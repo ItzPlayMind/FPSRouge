@@ -4,6 +4,7 @@ using Unity.Netcode;
 using UnityEngine;
 using static Utils;
 using System.Linq;
+using UnityEngine.Events;
 
 public class Island : NetworkBehaviour
 {
@@ -17,6 +18,8 @@ public class Island : NetworkBehaviour
     [SerializeField] private List<Objective> objectives = new List<Objective>();
 
     [SerializeField] private Range<int> objectiveCount = new Range<int>(1, 3);
+
+    [SerializeField] private UnityEvent OnObjectivesComplete;
 
     private List<Objective> currentObjectives = new List<Objective>();
     private int completeObjectiveCounter = 0;
@@ -42,8 +45,9 @@ public class Island : NetworkBehaviour
         {
             objectiveIds[i] = availableObjectiveIds[Random.Range(0, availableObjectiveIds.Count)];
             availableObjectiveIds.Remove(i);
-        }
 
+            Debug.Log(objectiveIds[i]);
+        }
         SetupServerRpc(objectiveIds);
     }
 
@@ -59,15 +63,15 @@ public class Island : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SetupClientRpc(int[] objectives)
+    private void SetupClientRpc(int[] objectiveIds)
     {
         for (int i = 0; i < this.objectives.Count; i++)
         {
-            if (objectives.Contains(i))
+            if (objectiveIds.Contains(i))
             {
-                currentObjectives.Add(this.objectives[objectives[i]]);
-                currentObjectives[i].OnComplete += OnObjectiveComplete;
-                currentObjectives[i].Setup();
+                currentObjectives.Add(this.objectives[i]);
+                currentObjectives[currentObjectives.Count-1].OnComplete += OnObjectiveComplete;
+                currentObjectives[currentObjectives.Count - 1].Setup();
             }
             else
             {
@@ -83,6 +87,7 @@ public class Island : NetworkBehaviour
         {
             portal.SetActive(true);
             Complete = true;
+            OnObjectivesComplete?.Invoke();
         }
     }
 }

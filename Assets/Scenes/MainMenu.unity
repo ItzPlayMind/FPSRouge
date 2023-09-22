@@ -2461,6 +2461,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 1866d7feeca61274ea1eda30a11753c3, type: 2}
   - {fileID: 11400000, guid: a8de2e75fbd5f84448b39787e51fa09d, type: 2}
   - {fileID: 11400000, guid: faf4c1cd17857e2409bac17ade810da5, type: 2}
+  - {fileID: 11400000, guid: 8ddfd25959d061c4f8a947bb2458ec80, type: 2}
   materials:
   - {fileID: 11400000, guid: 87dd7a1c35791664d83dab90d576f823, type: 2}
   - {fileID: 11400000, guid: 2d705c35ec89f2b45bdb7c329844f69b, type: 2}
@@ -2490,8 +2491,8 @@ MonoBehaviour:
   m_MaxConnectAttempts: 60
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
-    Address: 127.0.0.1
-    Port: 7777
+    Address: 178.191.181.148
+    Port: 25565
     ServerListenAddress: 127.0.0.1
   DebugSimulator:
     PacketDelayMS: 0

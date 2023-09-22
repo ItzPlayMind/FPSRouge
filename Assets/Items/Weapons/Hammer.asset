@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hammer
   m_EditorClassIdentifier: 
   gfx: {fileID: 4782151826882022934, guid: ed70bfcc796410745834312d6e3afff7, type: 3}
-  controller: {fileID: 22100000, guid: 5e57de85a420e7649a60a7032f582875, type: 2}
+  controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
   damage: 30
   attackSpeed: 1
   attackRange: 4

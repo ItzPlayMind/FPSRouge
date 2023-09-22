@@ -23,7 +23,7 @@ public class CharacterStats : NetworkBehaviour
         }
     }
 
-    [SerializeField] protected NetworkVariable<float> currentHealth = new NetworkVariable<float>(0,NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+    protected NetworkVariable<float> currentHealth = new NetworkVariable<float>(0,NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
     protected NetworkObject networkObject;
 

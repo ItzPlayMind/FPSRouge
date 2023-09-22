@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fee002c44554ab47970fd9af4d2d442, type: 3}
+  m_Name: Staff
+  m_EditorClassIdentifier: 
+  gfx: {fileID: 7125969356488793057, guid: d9a50284b3f4b594685fbe7fc60f572b, type: 3}
+  controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
+  damage: 35
+  attackSpeed: 1
+  attackRange: 15
+  staminaUsage: 10
+  projectile: {fileID: 3151850052159157485, guid: bd8f6310dc65de84086617c9758ca854,
+    type: 3}
+  force: 20

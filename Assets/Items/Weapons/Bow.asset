@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bow
   m_EditorClassIdentifier: 
   gfx: {fileID: 5340853586808930193, guid: a802548cf82329e47a54b9036758b35b, type: 3}
-  controller: {fileID: 22100000, guid: 5e57de85a420e7649a60a7032f582875, type: 2}
+  controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
   damage: 15
   attackSpeed: 1
   attackRange: 15
