@@ -6,12 +6,19 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Effect", menuName = "Effects/New Effect")]
 public class Effect : ScriptableObject
 {
+    
+
+    [Multiline]
     [SerializeField] private string description;
+    [SerializeField] private Utils.CustomValue[] variables;
 
-    public string Description { get => description; }
+    public Utils.CustomValue[] Variables { get => variables; }
+   
 
-    private List<object> variableStore = new List<object>();
-    public List<object> VariableStore { get => variableStore; }
+    public string Description { get => DescriptionCreator.Generate(description, Variables); }
+
+    private Dictionary<string, object> variableStore = new Dictionary<string, object>();
+    public Dictionary<string,object> VariableStore { get => variableStore; }
 
     private MethodInfo passiv;
     private MethodInfo onequip;

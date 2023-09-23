@@ -235,6 +235,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2835664596896443642, guid: 7d5f925d5c6f55e4cadbb08c44156bb9,
+        type: 3}
+      propertyPath: mainHandItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ddfd25959d061c4f8a947bb2458ec80,
+        type: 2}
     - target: {fileID: 7052936917597032240, guid: 7d5f925d5c6f55e4cadbb08c44156bb9,
         type: 3}
       propertyPath: attackAngle
@@ -3762,7 +3768,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   controller: {fileID: 0}
-  adsMultiplier: 0.5
   sway: 1
   swayRotation: 1
   bobOffset: 1
@@ -5922,7 +5927,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 7159
+    m_Bits: 15351
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0

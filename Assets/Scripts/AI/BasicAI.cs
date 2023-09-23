@@ -118,7 +118,11 @@ public class BasicAI : NetworkBehaviour
             }
             animator.SetFloat("SpeedZ", 0);
             agent.SetDestination(transform.position);
-            Vector3 dir = (target.transform.position - transform.position).normalized;
+            Vector3 targetPos = target.transform.position;
+            Vector3 transformPos = transform.position;
+            transformPos.y = 0;
+            targetPos.y = 0;
+            Vector3 dir = (targetPos - transformPos).normalized;
             if (Mathf.Abs(Utils.AngleBetween(weaponManager.AttackPoint.forward, dir)) <= attackAngle)
             {
                 weaponManager.Attack();

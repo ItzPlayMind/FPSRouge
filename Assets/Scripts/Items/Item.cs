@@ -27,10 +27,13 @@ public abstract class Item : ScriptableObject
         if (activeGameObject != null)
             Destroy(activeGameObject);
         activeGameObject = GameObject.Instantiate(gfx, transform);
+        OnInstantiate(transform, manager);
         if (manager != null)
             SetupOnEquip(manager);
         return activeGameObject;
     }
+
+    protected virtual void OnInstantiate(Transform transform, WeaponManager manager) { }
 
     public void SetupOnEquip(WeaponManager manager = null)
     {

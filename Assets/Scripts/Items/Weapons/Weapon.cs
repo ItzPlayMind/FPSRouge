@@ -7,8 +7,11 @@ using static Utils;
 public abstract class Weapon : Item
 {
     [SerializeField] private float damage;
-    [SerializeField] private DamageType damageType;
-    public DamageType DamageType { get => damageType; }
+
+    private Transform attackPoint;
+    public Transform AttackPoint { get => attackPoint; }
+
+    
     public OnChangeValue<float> OnChangeDamage;
     public float Damage
     {
@@ -16,6 +19,18 @@ public abstract class Weapon : Item
         {
             float value = damage;
             OnChangeDamage?.Invoke(ref value);
+            return value;
+        }
+    }
+
+    [SerializeField] private DamageType damageType;
+    public OnChangeValue<DamageType> OnChangeDamageType;
+    public DamageType DamageType
+    {
+        get
+        {
+            DamageType value = damageType;
+            OnChangeDamageType?.Invoke(ref value);
             return value;
         }
     }
@@ -51,6 +66,11 @@ public abstract class Weapon : Item
         {
             return staminaUsage;
         }
+    }
+
+    protected override void OnInstantiate(Transform transform, WeaponManager manager)
+    {
+        attackPoint = Active.transform.Find("AttackPoint");
     }
 
     public override bool CanUse(CharacterStats user)

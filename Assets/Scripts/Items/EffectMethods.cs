@@ -18,18 +18,45 @@ public static class EffectMethods
     public static string GetUnequipMethodName(string name) => name + "_OnUnequip";
     public static string GetPassiveMethodName(string name) => name + "_OnPassive";
 
-    #region Sword
-    public static void Sword_OnEquip(Effect effect, Item item, WeaponManager manager)
+    #region Physical
+    public static void Physical_OnEquip(Effect effect, Item item, WeaponManager manager)
     {
-        effect.VariableStore.Add(new Utils.OnChangeValue<float>((ref float value) =>
+        if (!Utils.IsMagic((manager.MainHandItem as Weapon).DamageType))
         {
-            value *= 1.25f;
-        }));
-        (manager.MainHandItem as Weapon).OnChangeDamage += (Utils.OnChangeValue<float>)effect.VariableStore[0];
+            effect.VariableStore["OnChangeDamage"] = new Utils.OnChangeValue<float>((ref float value) =>
+            {
+                value *= 1 + (effect.Variables[0].Float / 100f);
+            });
+            (manager.MainHandItem as Weapon).OnChangeDamage += (Utils.OnChangeValue<float>)effect.VariableStore["OnChangeDamage"];
+        }
     }
-    public static void Sword_OnUnequip(Effect effect, Item item, WeaponManager manager)
+    public static void Physical_OnUnequip(Effect effect, Item item, WeaponManager manager)
     {
-        (manager.MainHandItem as Weapon).OnChangeDamage -= (Utils.OnChangeValue<float>)effect.VariableStore[0];
+        if (!Utils.IsMagic((manager.MainHandItem as Weapon).DamageType))
+        {
+            (manager.MainHandItem as Weapon).OnChangeDamage -= (Utils.OnChangeValue<float>)effect.VariableStore["OnChangeDamage"];
+        }
+    }
+    #endregion
+
+    #region Magical
+    public static void Magical_OnEquip(Effect effect, Item item, WeaponManager manager)
+    {
+        if (Utils.IsMagic((manager.MainHandItem as Weapon).DamageType))
+        {
+            effect.VariableStore["OnChangeDamage"] = new Utils.OnChangeValue<float>((ref float value) =>
+            {
+                value *= 1 + (effect.Variables[0].Float / 100f);
+            });
+            (manager.MainHandItem as Weapon).OnChangeDamage += (Utils.OnChangeValue<float>)effect.VariableStore["OnChangeDamage"];
+        }
+    }
+    public static void Magical_OnUnequip(Effect effect, Item item, WeaponManager manager)
+    {
+        if (Utils.IsMagic((manager.MainHandItem as Weapon).DamageType))
+        {
+            (manager.MainHandItem as Weapon).OnChangeDamage -= (Utils.OnChangeValue<float>)effect.VariableStore["OnChangeDamage"];
+        }
     }
     #endregion
 }

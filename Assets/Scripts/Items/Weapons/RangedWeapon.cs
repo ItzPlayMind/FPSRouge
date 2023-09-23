@@ -10,7 +10,14 @@ public class RangedWeapon : Weapon
     [SerializeField] private float force = 50f;
     protected override void _Attack(Transform usePoint, CharacterStats attacker)
     {
-        SpawnManager.Instance.SpawnProjectile(attacker.NetworkObjectId, usePoint.position, usePoint.forward, force);
+        RaycastHit hit;
+        Vector3 point;
+        if (Physics.Raycast(usePoint.position, usePoint.forward, out hit, AttackRange))
+            point = hit.point;
+        else
+            point = usePoint.position + usePoint.forward * AttackRange;
+        Vector3 dir = (point - AttackPoint.position).normalized;
+        SpawnManager.Instance.SpawnProjectile(attacker.NetworkObjectId, AttackPoint.position, dir, force);
     }
 
     public virtual void OnProjectileSpawned(ulong spawnerID, Projectile projectile)

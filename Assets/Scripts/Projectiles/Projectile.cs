@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
+    [SerializeField] private float despawnTime = 5f;
     public System.Action<GameObject> OnTargetHit { get; set; }
 
     private Rigidbody rb;
@@ -32,8 +33,21 @@ public class Projectile : NetworkBehaviour
             Hit = true;
             OnTargetHit?.Invoke(hit.transform.gameObject);
             rb.isKinematic = true;
+            DespawnAfterTimeServerRpc(despawnTime);
             //transform.SetParent(hit.transform);
         }
         lastPosition = transform.position;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DespawnAfterTimeServerRpc(float time)
+    {
+        StartCoroutine(DespawnAfterTimeCoroutine(time));
+    }
+
+    IEnumerator DespawnAfterTimeCoroutine(float time)
+    {
+        yield return new WaitForSeconds(time);
+        GetComponent<NetworkObject>().Despawn();
     }
 }

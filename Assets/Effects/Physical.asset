@@ -10,6 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 320bda1f974a47347aae20970309f7c4, type: 3}
-  m_Name: Sword
+  m_Name: Physical
   m_EditorClassIdentifier: 
-  description: 
+  description: All Physical Weapons gain $0% more damage.
+  variables:
+  - type: 1
+    stringValue: 
+    floatValue: 25
+    intValue: 0
+    objectValue: {fileID: 0}
