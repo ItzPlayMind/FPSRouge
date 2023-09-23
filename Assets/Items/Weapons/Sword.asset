@@ -18,5 +18,6 @@ MonoBehaviour:
   damage: 10
   damageType: 0
   attackSpeed: 1
-  attackRange: 5
+  attackRange: 3
   staminaUsage: 20
+  hitBoxSize: {x: 0.75, y: 1, z: 0.5}

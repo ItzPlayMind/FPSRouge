@@ -5,26 +5,21 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Melee Weapon", menuName = "Items/Weapons/New Melee Weapon")]
 public class MeleeWeapon : Weapon
 {
+    [SerializeField] private Vector3 hitBoxSize;
+    public Vector3 Hitbox { get => hitBoxSize; }
     protected override void _Attack(Transform usePoint, CharacterStats attacker)
     {
-        //GetComponentInChildren<MeshRenderer>().material.color = Random.ColorHSV();
-        var target = GetRaycastTarget(usePoint);
-        if (target == null)
-            return;
-        target.TakeDamage(Damage, DamageType,attacker.NetworkObjectId);
-    }
-
-    private CharacterStats GetRaycastTarget(Transform usePoint)
-    {
-        RaycastHit hit;
-        if(Physics.Raycast(usePoint.transform.position, usePoint.transform.forward, out hit, AttackRange))
+        var hits = Physics.BoxCastAll(usePoint.position, hitBoxSize / 2, usePoint.transform.forward, usePoint.rotation, AttackRange);
+        foreach (var item in hits)
         {
-            if(hit.transform != null)
+            var stats = item.transform.GetComponent<CharacterStats>();
+            if (stats != null)
             {
-                Debug.Log("Hit " + hit.transform.name);
-                return hit.transform.GetComponent<CharacterStats>();
+                if (stats == attacker)
+                    continue;
+                Debug.Log("Hit " + item.transform.name);
+                stats.TakeDamage(Damage, DamageType, attacker.NetworkObjectId);
             }
         }
-        return null;
     }
 }

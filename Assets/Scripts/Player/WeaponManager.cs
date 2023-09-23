@@ -160,4 +160,21 @@ public class WeaponManager : NetworkBehaviour
             return;
         hands.MainHandAnimator.Play("UseClient");
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (mainHandItem != null)
+        {
+            if (mainHandItem is Weapon)
+            {
+                var weapon = mainHandItem as Weapon;
+                Gizmos.DrawLine(attackPoint.position, attackPoint.position + attackPoint.forward * weapon.AttackRange);
+                if (mainHandItem is MeleeWeapon)
+                {
+                    var meleweapon = weapon as MeleeWeapon;
+                    Gizmos.DrawWireCube(attackPoint.position + new Vector3(0,0, meleweapon.Hitbox.z/2f),meleweapon.Hitbox);
+                }
+            }
+        }
+    }
 }

@@ -739,7 +739,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4817296539100642457
 Transform:
   m_ObjectHideFlags: 0
@@ -1261,8 +1261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  currentHealth:
-    m_InternalValue: 0
+  modifiers: []
   maxStamina: 100
   staminaRechargeRate: 20
 --- !u!136 &6480582150080419558
@@ -1643,7 +1642,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2035784750805066327
 Transform:
   m_ObjectHideFlags: 0

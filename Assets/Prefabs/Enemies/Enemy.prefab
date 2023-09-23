@@ -1655,7 +1655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offHandItem: {fileID: 0}
-  mainHandItem: {fileID: 11400000, guid: 8ddfd25959d061c4f8a947bb2458ec80, type: 2}
+  mainHandItem: {fileID: 11400000, guid: a8de2e75fbd5f84448b39787e51fa09d, type: 2}
   hands: {fileID: 1353443626894087986}
   attackPoint: {fileID: 8342683156071851161}
   overrideAnimators: 0
