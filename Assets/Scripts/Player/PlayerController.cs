@@ -20,6 +20,7 @@ public class PlayerController : NetworkBehaviour
     private InputManager inputManager;
     private WeaponManager weaponManager;
 
+    public bool OnGround { get => motor.GroundingStatus.IsStableOnGround; }
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
@@ -43,7 +44,9 @@ public class PlayerController : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         playerCamera = Camera.main;
         weaponManager = GetComponent<WeaponManager>();
-        weaponManager.SetHands(Camera.main.transform.Find("Hands")?.GetComponent<Hands>());
+        var hands = Camera.main.transform.Find("Hands")?.GetComponent<Hands>();
+        hands.GetComponent<SwayAndBob>().SetController(this);
+        weaponManager.SetHands(hands);
         weaponManager.SetAttackPoint(playerCamera.transform);
         weaponManager.SetupHands();
         motor = GetComponent<KinematicCharacterMotor>();

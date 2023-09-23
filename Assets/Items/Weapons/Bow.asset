@@ -15,6 +15,7 @@ MonoBehaviour:
   gfx: {fileID: 5340853586808930193, guid: a802548cf82329e47a54b9036758b35b, type: 3}
   controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
   damage: 15
+  damageType: 2
   attackSpeed: 1
   attackRange: 15
   staminaUsage: 10

@@ -11,6 +11,9 @@ public class WeaponManager : NetworkBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private bool overrideAnimators = true;
 
+    public Item MainHandItem { get => mainHandItem; }
+    public Item OffHandItem { get => offHandItem; }
+
     public Transform AttackPoint { get => attackPoint; }
 
     private CharacterStats stats;
@@ -30,11 +33,11 @@ public class WeaponManager : NetworkBehaviour
     public void SetupHands()
     {
         hands.gameObject.SetActive(true);
-        if (offHandItem != null)
-            offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off, overrideAnimators);
         if (mainHandItem != null)
-            mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main, overrideAnimators);
-        if(IsOwner)
+            mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main, null, overrideAnimators);
+        if (offHandItem != null)
+            offHandItem = (Weapon)hands.Instantiate(offHandItem.Clone(), Hands.Hand.Off, this, overrideAnimators);
+        if (IsOwner)
             hands.AttackEventSender.OnAnimationEvent = () =>
             {
                 mainHandItem.Use(attackPoint, stats);
@@ -95,6 +98,8 @@ public class WeaponManager : NetworkBehaviour
         if (!IsOwner)
             return;
 
+        offHandItem?.Passive(AttackPoint, stats);
+
         if (attackTimer >= 0)
             attackTimer -= Time.deltaTime;
         else
@@ -108,12 +113,14 @@ public class WeaponManager : NetworkBehaviour
             case Hands.Hand.Main:
                 mainHandItem?.Destroy();
                 mainHandItem = item;
-                hands.Instantiate(mainHandItem, hand);
+                hands.Instantiate(mainHandItem, hand, null, overrideAnimators);
+                if (offHandItem != null)
+                    offHandItem.SetupOnEquip(this);
                 break;
             case Hands.Hand.Off:
-                offHandItem?.Destroy();
+                offHandItem?.Destroy(this);
                 offHandItem = item;
-                hands.Instantiate(offHandItem, hand);
+                hands.Instantiate(offHandItem, hand, this, overrideAnimators);
                 break;
         }
     }
@@ -152,5 +159,22 @@ public class WeaponManager : NetworkBehaviour
         if (IsOwner)
             return;
         hands.MainHandAnimator.Play("UseClient");
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (mainHandItem != null)
+        {
+            if (mainHandItem is Weapon)
+            {
+                var weapon = mainHandItem as Weapon;
+                Gizmos.DrawLine(attackPoint.position, attackPoint.position + attackPoint.forward * weapon.AttackRange);
+                if (mainHandItem is MeleeWeapon)
+                {
+                    var meleweapon = weapon as MeleeWeapon;
+                    Gizmos.DrawWireCube(attackPoint.position + new Vector3(0,0, meleweapon.Hitbox.z/2f),meleweapon.Hitbox);
+                }
+            }
+        }
     }
 }

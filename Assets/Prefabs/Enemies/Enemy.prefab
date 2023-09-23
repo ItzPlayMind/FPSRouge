@@ -1655,7 +1655,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offHandItem: {fileID: 0}
-  mainHandItem: {fileID: 11400000, guid: 8ddfd25959d061c4f8a947bb2458ec80, type: 2}
+  mainHandItem: {fileID: 11400000, guid: a8de2e75fbd5f84448b39787e51fa09d, type: 2}
   hands: {fileID: 1353443626894087986}
   attackPoint: {fileID: 8342683156071851161}
   overrideAnimators: 0
@@ -1672,8 +1672,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 20
-  currentHealth:
-    m_InternalValue: 0
+  modifiers:
+  - type: 0
+    multiplier: 0.9
+  - type: 1
+    multiplier: 1.1
   ragdoll: {fileID: 3152847455987455059, guid: 53e81635ef66bf94fa16b4dd5904e3d4, type: 3}
 --- !u!114 &8404860711743139346
 MonoBehaviour:

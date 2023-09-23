@@ -10,6 +10,15 @@ public class CharacterStats : NetworkBehaviour
     [SerializeField] private float maxHealth;
     public OnChangeValue<float> OnChangeMaxHealth;
 
+    [SerializeField] private List<Modifiers> modifiers = new List<Modifiers>();
+
+    [System.Serializable]
+    private class Modifiers
+    {
+        public DamageType type;
+        public float multiplier = 1;
+    }
+
     public System.Action<float, ulong> OnTakeDamage;
     public System.Action<float, ulong> OnHeal;
 
@@ -41,24 +50,28 @@ public class CharacterStats : NetworkBehaviour
 
     protected virtual void _OnNetworkSpawn() { }
 
-    public void TakeDamage(float damage, ulong netID)
+    public void TakeDamage(float damage, DamageType type, ulong netID)
     {
-        TakeDamageServerRpc(damage, netID);
+        TakeDamageServerRpc(damage, type, netID);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void TakeDamageServerRpc(float damage, ulong netID)
+    private void TakeDamageServerRpc(float damage, DamageType type,  ulong netID)
     {
-        TakeDamageClientRpc(damage, netID);
+        TakeDamageClientRpc(damage, type, netID);
     }
 
     [ClientRpc]
-    private void TakeDamageClientRpc(float damage, ulong netID)
+    private void TakeDamageClientRpc(float damage, DamageType type, ulong netID)
     {
         if (!IsOwner)
             return;
         damage = Mathf.Max(damage, 0);
+        var modifier = modifiers.Find(x => x.type == type);
+        if(modifier != null)
+            damage *= modifier.multiplier;
         currentHealth.Value = Mathf.Clamp(currentHealth.Value - damage, 0, MaxHealth);
+        Debug.Log(name + " has taken Damage: " + damage);
         OnTakeDamage?.Invoke(damage, netID);
         if (currentHealth.Value <= 0 && !isDead)
         {
@@ -66,25 +79,28 @@ public class CharacterStats : NetworkBehaviour
         }
     }
 
-    public void Heal(float health, ulong netID)
+    public void Heal(float health, DamageType type, ulong netID)
     {
-        HealServerRpc(health, netID);
+        HealServerRpc(health, type, netID);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void HealServerRpc(float health, ulong netID)
+    private void HealServerRpc(float health, DamageType type, ulong netID)
     {
-        HealClientRpc(health, netID);
+        HealClientRpc(health, type, netID);
     }
 
     [ClientRpc]
-    private void HealClientRpc(float health, ulong netID)
+    private void HealClientRpc(float health, DamageType type, ulong netID)
     {
         if (!IsOwner)
             return;
         if (isDead)
             return;
         health = Mathf.Max(health, 0);
+        var modifier = modifiers.Find(x => x.type == type);
+        if (modifier != null)
+            health *= modifier.multiplier;
         currentHealth.Value = Mathf.Clamp(currentHealth.Value + health, 0, MaxHealth);
         OnHeal?.Invoke(health, netID);
     }
