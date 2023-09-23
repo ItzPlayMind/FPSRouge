@@ -7,6 +7,8 @@ using static Utils;
 public abstract class Weapon : Item
 {
     [SerializeField] private float damage;
+    [SerializeField] private DamageType damageType;
+    public DamageType DamageType { get => damageType; }
     public OnChangeValue<float> OnChangeDamage;
     public float Damage
     {

@@ -32,7 +32,7 @@ public class Hands : MonoBehaviour
         return Instantiate(obj, spot);
     }
 
-    public Item Instantiate(Item obj, Hand hand, bool overrideAnimators = true)
+    public Item Instantiate(Item obj, Hand hand, WeaponManager manager, bool overrideAnimators = true)
     {
         Transform spot = null;
         switch (hand)
@@ -46,7 +46,7 @@ public class Hands : MonoBehaviour
                     mainhandAnimator.runtimeAnimatorController = obj.AnimatorController;
                 break;
         }
-        obj.Instantiate(spot);
+        obj.Instantiate(spot, manager);
         return obj;
     }
 }

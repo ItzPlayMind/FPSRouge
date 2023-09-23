@@ -20,7 +20,7 @@ public class RangedWeapon : Weapon
             CharacterStats stats = target.GetComponent<CharacterStats>();
             if(stats != null)
             {
-                stats.TakeDamage(Damage, spawnerID);
+                stats.TakeDamage(Damage, DamageType, spawnerID);
             }
         };
     }

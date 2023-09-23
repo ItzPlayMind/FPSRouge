@@ -11,7 +11,7 @@ public class MeleeWeapon : Weapon
         var target = GetRaycastTarget(usePoint);
         if (target == null)
             return;
-        target.TakeDamage(Damage,attacker.NetworkObjectId);
+        target.TakeDamage(Damage, DamageType,attacker.NetworkObjectId);
     }
 
     private CharacterStats GetRaycastTarget(Transform usePoint)
