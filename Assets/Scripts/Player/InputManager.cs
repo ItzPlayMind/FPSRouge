@@ -95,7 +95,12 @@ public class InputManager : MonoBehaviour
     private float GetValueOrDefault(InputAction action, float defaultValue)
     {
         if (buffer.ContainsKey(action))
-            return buffer[action];
+        {
+            float value = buffer[action];
+            if (value > 0)
+                buffer.Remove(action);
+            return value;
+        }
         return defaultValue;
     }
 
@@ -119,6 +124,7 @@ public class InputManager : MonoBehaviour
 
     public bool PlayerInteractTrigger { get => playerInteractTrigger && playerControls.Camera.Interact.triggered; }
     public bool PlayerInteractHold { get => playerInteractHold && playerControls.Camera.Interact.triggered; }
+    public bool PlayerSwapItemsTrigger { get { return GetValueOrDefault(playerControls.Combat.SwapItems, -1) > 0; } }
     //public bool PlayerInventoryTrigger { get => playerControls.Additional.Inventory.triggered; }
     //public bool PlayerMenuTrigger { get => playerControls.Additional.Menu.triggered; }
 

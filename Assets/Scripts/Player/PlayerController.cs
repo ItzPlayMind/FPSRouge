@@ -15,7 +15,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private Animator animator;
 
     private KinematicCharacterMotor motor;
-
+    private PlayerStats stats;
     private Camera playerCamera;
     private InputManager inputManager;
     private WeaponManager weaponManager;
@@ -50,7 +50,7 @@ public class PlayerController : NetworkBehaviour
         weaponManager.SetAttackPoint(playerCamera.transform);
         weaponManager.SetupHands();
         motor = GetComponent<KinematicCharacterMotor>();
-
+        stats = GetComponent<PlayerStats>();
         motor.SetPosition(PlayerSpawn.Instance.transform.position+new Vector3(Random.Range(-1f,1f),0,Random.Range(-1f,1f)));
         motor.SetRotation(PlayerSpawn.Instance.transform.rotation);
     }
@@ -134,6 +134,14 @@ public class PlayerController : NetworkBehaviour
         if (inputManager.PlayerAttackTrigger)
         {
             weaponManager?.Attack();
+        }
+        if (inputManager.PlayerSwapItemsTrigger)
+        {
+            if (stats.HasStamina(30))
+            {
+                weaponManager?.SwapItems();
+                stats.TakeStamina(30);
+            }
         }
     }
 

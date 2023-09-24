@@ -19,10 +19,10 @@ public class WeaponManager : NetworkBehaviour
     private CharacterStats stats;
 
     private float attackTimer = 0;
+    private float swapTimer = 0;
 
     protected bool canUse = false;
     public bool CanUse { get => canUse; }
-
 
     public override void OnNetworkSpawn()
     {
@@ -99,7 +99,8 @@ public class WeaponManager : NetworkBehaviour
             return;
 
         offHandItem?.Passive(AttackPoint, stats);
-
+        if (swapTimer >= 0)
+            swapTimer -= Time.deltaTime;
         if (attackTimer >= 0)
             attackTimer -= Time.deltaTime;
         else
@@ -123,6 +124,40 @@ public class WeaponManager : NetworkBehaviour
                 hands.Instantiate(offHandItem, hand, this, overrideAnimators);
                 break;
         }
+    }
+
+    public void SwapItems()
+    {
+        if (mainHandItem == null || offHandItem == null)
+            return;
+        if (!IsOwner)
+            return;
+        if (swapTimer > 0)
+            return;
+        swapTimer = 0.1f;
+        SwapItemsServerRpc();
+    }
+
+    [ServerRpc]
+    private void SwapItemsServerRpc()
+    {
+        SwapItemsClientRpc();
+    }
+
+    [ClientRpc]
+    private void SwapItemsClientRpc()
+    {
+        offHandItem?.Destroy(this); 
+        mainHandItem?.Destroy();
+
+        var item = offHandItem.Clone();
+        offHandItem = mainHandItem;
+        mainHandItem = item;
+
+        hands.Instantiate(offHandItem, Hands.Hand.Off, this, overrideAnimators);
+        hands.Instantiate(mainHandItem, Hands.Hand.Main, null, overrideAnimators);
+        if (offHandItem != null)
+            offHandItem.SetupOnEquip(this);
     }
 
     public void Attack()

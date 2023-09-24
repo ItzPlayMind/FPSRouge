@@ -25,7 +25,10 @@ public abstract class Item : ScriptableObject
     {
         offhandEffect?.Setup();
         if (activeGameObject != null)
+        {
             Destroy(activeGameObject);
+            activeGameObject = null;
+        }
         activeGameObject = GameObject.Instantiate(gfx, transform);
         OnInstantiate(transform, manager);
         if (manager != null)
@@ -45,6 +48,9 @@ public abstract class Item : ScriptableObject
         if (manager != null)
             offhandEffect?.OnUnequip(this, manager);
         if (activeGameObject != null)
+        {
             GameObject.Destroy(activeGameObject);
+            activeGameObject = null;
+        }
     }
 }

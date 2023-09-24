@@ -195,6 +195,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Swap Items"",
+                    ""type"": ""Button"",
+                    ""id"": ""ba57dd45-0c91-4de2-aec6-99710f8f0d3d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -206,6 +215,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b27dffe1-3fb6-45f3-b23d-7611f75e8aae"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Swap Items"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -226,6 +246,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Combat
         m_Combat = asset.FindActionMap("Combat", throwIfNotFound: true);
         m_Combat_Attack = m_Combat.FindAction("Attack", throwIfNotFound: true);
+        m_Combat_SwapItems = m_Combat.FindAction("Swap Items", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -404,11 +425,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Combat;
     private List<ICombatActions> m_CombatActionsCallbackInterfaces = new List<ICombatActions>();
     private readonly InputAction m_Combat_Attack;
+    private readonly InputAction m_Combat_SwapItems;
     public struct CombatActions
     {
         private @PlayerInput m_Wrapper;
         public CombatActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_Combat_Attack;
+        public InputAction @SwapItems => m_Wrapper.m_Combat_SwapItems;
         public InputActionMap Get() { return m_Wrapper.m_Combat; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -421,6 +444,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
+            @SwapItems.started += instance.OnSwapItems;
+            @SwapItems.performed += instance.OnSwapItems;
+            @SwapItems.canceled += instance.OnSwapItems;
         }
 
         private void UnregisterCallbacks(ICombatActions instance)
@@ -428,6 +454,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
+            @SwapItems.started -= instance.OnSwapItems;
+            @SwapItems.performed -= instance.OnSwapItems;
+            @SwapItems.canceled -= instance.OnSwapItems;
         }
 
         public void RemoveCallbacks(ICombatActions instance)
@@ -459,5 +488,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface ICombatActions
     {
         void OnAttack(InputAction.CallbackContext context);
+        void OnSwapItems(InputAction.CallbackContext context);
     }
 }
