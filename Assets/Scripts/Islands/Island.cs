@@ -8,8 +8,18 @@ using UnityEngine.Events;
 
 public class Island : NetworkBehaviour
 {
+    [SerializeField] private Vector3 size;
+    public Vector3 Size { get => size; }
     public bool Complete { get; private set; }
     public Island Next { get; private set; }
+
+    [System.Serializable]
+    private class IslandNetworkObjectTransform
+    {
+        public NetworkObject networkObject;
+        public Transform[] transform;
+    }
+    [SerializeField] private List<IslandNetworkObjectTransform> islandNetworkObjects = new List<IslandNetworkObjectTransform>();
 
     [SerializeField] private bool spawnPlayers;
 
@@ -21,6 +31,8 @@ public class Island : NetworkBehaviour
 
     [SerializeField] private UnityEvent OnObjectivesComplete;
 
+    [SerializeField] private UnityEvent OnArrive;
+
     private List<Objective> currentObjectives = new List<Objective>();
     private int completeObjectiveCounter = 0;
 
@@ -29,8 +41,26 @@ public class Island : NetworkBehaviour
         base.OnNetworkSpawn();
         if (!IsOwner)
             return;
-
         Setup();
+    }
+
+    [ServerRpc]
+    private void SpawnIslandNetworkObjectsServerRpc()
+    {
+        foreach (var item in islandNetworkObjects)
+        {
+            foreach (var positions in item.transform)
+            {
+                var obj = Instantiate(item.networkObject, positions);
+                obj.Spawn();
+            }
+        }
+    }
+
+    public void SetNext(Island island)
+    {
+        if (Next == null)
+            Next = island;
     }
 
     private void Setup()
@@ -55,11 +85,8 @@ public class Island : NetworkBehaviour
     private void SetupServerRpc(int[] objectives)
     {
         SetupClientRpc(objectives);
-        if(spawnPlayers)
-            SceneManager.Instance.OnLoadComplete = () =>
-            {
-                PlayerSpawn.Instance.Spawn();
-            };
+        if (spawnPlayers)
+            SpawnPlayers();
     }
 
     [ClientRpc]
@@ -80,6 +107,22 @@ public class Island : NetworkBehaviour
         }
     }
 
+    private void Arrive()
+    {
+        if (IsOwner)
+            SpawnIslandNetworkObjectsServerRpc();
+        OnArrive?.Invoke();
+    }
+
+    public void SpawnPlayers()
+    {
+        SceneManager.Instance.OnLoadComplete = () =>
+        {
+            PlayerSpawn.Instance.Spawn();
+        };
+        Arrive();
+    }
+
     private void OnObjectiveComplete()
     {
         completeObjectiveCounter++;
@@ -89,5 +132,13 @@ public class Island : NetworkBehaviour
             Complete = true;
             OnObjectivesComplete?.Invoke();
         }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        var color = Gizmos.color;
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireCube(transform.position, size);
+        Gizmos.color = color;
     }
 }

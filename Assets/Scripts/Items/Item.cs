@@ -12,6 +12,7 @@ public abstract class Item : ScriptableObject
     [SerializeField] private AnimatorOverrideController controller;
     [SerializeField] private Effect offhandEffect;
 
+    public Effect OffHandEffect { get => offhandEffect; }
 
     private GameObject activeGameObject;
     protected GameObject Active { get => activeGameObject; }

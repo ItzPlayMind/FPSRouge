@@ -14,6 +14,7 @@ public class ItemDrop : Interactable
     [SerializeField] private UIField rangeField;
     [SerializeField] private UIField speedField;
     [SerializeField] private UIField staminaField;
+    [SerializeField] private TMPro.TextMeshProUGUI effectDescription;
 
     public void SetItem(Item item) => this.item = item;
 
@@ -48,6 +49,8 @@ public class ItemDrop : Interactable
             staminaField.gameObject.SetActive(false);
             speedField.gameObject.SetActive(false);
         }
+        if(item.OffHandEffect != null)
+            effectDescription.text = item.OffHandEffect.Description;
     }
 
     public override void Interact(PlayerController player, InteractionType type)
