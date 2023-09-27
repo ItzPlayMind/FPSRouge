@@ -5,18 +5,20 @@ using UnityEngine.Events;
 
 public class WorldInteractable : Interactable
 {
-    [SerializeField] private bool onceOnly;
     [SerializeField] public UnityEvent OnInteract;
+    private Animator animator;
 
-    private bool interacted;
-
-    public override void Interact(PlayerController player, InteractionType type)
+    public override void OnNetworkSpawn()
     {
-        if (onceOnly && interacted)
-            return;
+        base.OnNetworkSpawn();
+        animator = GetComponent<Animator>();
+    }
+
+    public override void _Interact(PlayerController player, InteractionType type)
+    {
         Debug.Log("Interacted with " + name);
-        interacted = true;
         OnInteract?.Invoke();
+        animator?.SetTrigger("Interact");
     }
 
     public override void OnHover(PlayerController player)
@@ -26,15 +28,11 @@ public class WorldInteractable : Interactable
 
     public override void OnHoverEnd(PlayerController player)
     {
-        if (onceOnly && interacted)
-            return;
         //TODO: Hide UI
     }
 
     public override void OnHoverStart(PlayerController player)
     {
-        if (onceOnly && interacted)
-            return;
         //TODO: Show UI
     }
 

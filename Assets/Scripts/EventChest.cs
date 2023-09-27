@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Chest : Interactable
+public class EventChest : Interactable
 {
+    [SerializeField] private Objective chestEvent;
     private Spawner spawner;
     private AnimationEventSender animationEventSender;
     private Animation anim;
+
+    private Objective current;
 
     private void Start()
     {
@@ -23,8 +26,23 @@ public class Chest : Interactable
         {
             Debug.Log("Spawn!");
             spawner.Spawn();
-        };
-        OpenServerRpc();
+        }; 
+        StartEventServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void StartEventServerRpc()
+    {
+        current = Instantiate(chestEvent,transform.position,transform.rotation);
+        current.OnComplete += OpenClientRpc;
+        StartEventClientRpc(current.NetworkObjectId);
+    }
+
+    [ClientRpc]
+    private void StartEventClientRpc(ulong objectiveID)
+    {
+        current = GetNetworkObject(objectiveID).GetComponent<Objective>();
+        current.Setup();
     }
 
     [ServerRpc(RequireOwnership = false)]

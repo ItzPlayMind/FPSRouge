@@ -33,7 +33,7 @@ public class MaterialDrop : Interactable
         descriptionText.text = material.description;
     }
 
-    public override void Interact(PlayerController player, InteractionType type)
+    public override void _Interact(PlayerController player, InteractionType type)
     {
         pickedUp = true;
         player.GetComponent<MaterialManager>().AddMaterial(material);

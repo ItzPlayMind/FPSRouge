@@ -129,6 +129,13 @@ public class PlayerController : NetworkBehaviour
         }
     }
 
+    public void SetPosition(Vector3 pos) => motor.SetPosition(pos);
+    public void SetRotation(Quaternion rot)
+    {
+        motor.SetRotation(rot);
+        playerVirtualCamera.ForceCameraPosition(playerVirtualCamera.transform.position, rot);
+    }
+
     private void HandleAttacking()
     {
         if (inputManager.PlayerAttackTrigger)

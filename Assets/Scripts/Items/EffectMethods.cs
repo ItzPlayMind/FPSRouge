@@ -18,6 +18,14 @@ public static class EffectMethods
     public static string GetUnequipMethodName(string name) => name + "_OnUnequip";
     public static string GetPassiveMethodName(string name) => name + "_OnPassive";
 
+    private static void WithDelay(MonoBehaviour obj, System.Action action, float time) => obj.StartCoroutine(WithDelayCoroutine(action, time));
+
+    private static IEnumerator WithDelayCoroutine(System.Action action, float time)
+    {
+        yield return new WaitForSeconds(time);
+        action?.Invoke();
+    }
+
     #region Physical
     public static void Physical_OnEquip(Effect effect, Item item, WeaponManager manager)
     {
@@ -56,6 +64,36 @@ public static class EffectMethods
         if (Utils.IsMagic((manager.MainHandItem as Weapon).DamageType))
         {
             (manager.MainHandItem as Weapon).OnChangeDamage -= (Utils.OnChangeValue<float>)effect.VariableStore["OnChangeDamage"];
+        }
+    }
+    #endregion
+
+    #region Archery
+    public static void Archery_OnEquip(Effect effect, Item offHandItem, WeaponManager manager)
+    {
+        if (manager.MainHandItem is RangedWeapon)
+        {
+            Debug.Log("IS RANGED!");
+            effect.VariableStore["OnUse"] = new System.Action<Item, Transform, CharacterStats>((Item item, Transform usePoint, CharacterStats stats) =>
+            {
+                Debug.Log("USED!");
+                for (int i = 0; i < effect.Variables[0].Integer; i++)
+                {
+                    WithDelay(manager, () =>
+                    {
+                        Debug.Log("USE AGAIN!");
+                        item.Use(usePoint, stats, false);
+                    }, 0.1f * (i+1));
+                }
+            });
+            manager.MainHandItem.OnUse += (System.Action<Item, Transform, CharacterStats>)effect.VariableStore["OnUse"];
+        }
+    }
+    public static void Archery_OnUnequip(Effect effect, Item item, WeaponManager manager)
+    {
+        if (item is RangedWeapon)
+        {
+            manager.MainHandItem.OnUse -= (System.Action<Item, Transform, CharacterStats>)effect.VariableStore["OnUse"];
         }
     }
     #endregion

@@ -8,6 +8,8 @@ using UnityEngine;
 
 public abstract class Item : ScriptableObject
 {
+    public System.Action<Item, Transform, CharacterStats> OnUse;
+
     [SerializeField] private GameObject gfx;
     [SerializeField] private AnimatorOverrideController controller;
     [SerializeField] private Effect offhandEffect;
@@ -18,7 +20,15 @@ public abstract class Item : ScriptableObject
     protected GameObject Active { get => activeGameObject; }
 
     public AnimatorOverrideController AnimatorController { get => controller; }
-    public abstract void Use(Transform usePoint, CharacterStats user);
+    protected abstract void _Use(Transform usePoint, CharacterStats user);
+
+    public void Use(Transform usePoint, CharacterStats user, bool withCallback = true)
+    {
+        _Use(usePoint, user);
+        if(withCallback)
+            OnUse?.Invoke(this, usePoint, user);
+    }
+
     public void Passive(Transform usePoint, CharacterStats user) => offhandEffect?.Passive(this, usePoint, user);
     public abstract bool CanUse(CharacterStats user);
 

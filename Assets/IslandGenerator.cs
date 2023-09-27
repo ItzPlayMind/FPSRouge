@@ -38,10 +38,23 @@ public class IslandGenerator : NetworkBehaviour
             var islandComp = randomIsland.GetComponent<NetworkObject>();
             islandComp.Spawn();
             spawnedIslands.Add(randomIsland);
+            if(previousIsland != null)
+                SetupPortalsClientRpc(previousIsland.NetworkObjectId, randomIsland.NetworkObjectId);
             previousIsland = randomIsland;
         }
         spawnedIslands[0].SpawnPlayers();
         UpdateNavMeshClientRpc();
+    }
+
+    [ClientRpc]
+    private void SetupPortalsClientRpc(ulong previousID, ulong currentID)
+    {
+        Island previousIsland = GetNetworkObject(previousID).GetComponent<Island>();
+        Island currentIsland = GetNetworkObject(currentID).GetComponent<Island>();
+
+        previousIsland.End.SetTargetPortal(currentIsland.Start);
+        currentIsland.Start.SetTargetPortal(previousIsland.End);
+        previousIsland.End.OnEnter += currentIsland.Arrive;
     }
 
     [ClientRpc]

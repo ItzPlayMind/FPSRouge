@@ -5,13 +5,44 @@ using UnityEngine;
 
 public class InteractObjective : Objective
 {
-    [SerializeField] private List<WorldInteractable> interactables = new List<WorldInteractable>();
+    [SerializeField] private List<NetworkInteractable> interactables = new List<NetworkInteractable>();
+    [System.Serializable]
+    private class NetworkInteractable
+    {
+        public WorldInteractable interactable;
+        public Transform transform;
+    }
+
     private int counter = 0;
+
     public override void Setup()
     {
+        if(IsOwner)
+            SetupServerRpc();
+    }
+
+    [ServerRpc]
+    private void SetupServerRpc()
+    {
+        ulong[] ids = new ulong[interactables.Count];
+        int i = 0;
         foreach (var item in interactables)
         {
-            item.OnInteract.AddListener(OnInteracted);
+            var obj = Instantiate(item.interactable, item.transform.position, item.transform.rotation);
+            obj.GetComponent<NetworkObject>().Spawn();
+            ids[i] = obj.NetworkObjectId;
+            i++;
+        }
+        SetupClientRpc(ids);
+    }
+
+    [ClientRpc]
+    private void SetupClientRpc(ulong[] ids)
+    {
+        foreach (var item in ids)
+        {
+            var networkObj = GetNetworkObject(item);
+            networkObj?.GetComponent<WorldInteractable>()?.OnInteract.AddListener(OnInteracted);
         }
     }
 

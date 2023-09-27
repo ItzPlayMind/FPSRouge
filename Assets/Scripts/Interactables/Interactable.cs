@@ -5,6 +5,8 @@ using UnityEngine;
 
 public abstract class Interactable : NetworkBehaviour
 {
+    [SerializeField] private bool onceOnly;
+    private bool interacted;
     public enum InteractionType
     {
         Primary, Secondary
@@ -20,7 +22,15 @@ public abstract class Interactable : NetworkBehaviour
 
     protected void Destroy() { if (IsOwner) networkObject.Despawn(); }
 
-    public abstract void Interact(PlayerController player, InteractionType type);
+    public void Interact(PlayerController player, InteractionType type)
+    {
+        if (onceOnly && interacted)
+            return;
+        interacted = true;
+        _Interact(player, type);
+    }
+
+    public abstract void _Interact(PlayerController player, InteractionType type);
 
     public abstract void OnHover(PlayerController player);
 

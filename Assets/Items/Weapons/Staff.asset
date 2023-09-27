@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gfx: {fileID: 7125969356488793057, guid: d9a50284b3f4b594685fbe7fc60f572b, type: 3}
   controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
-  offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+  offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
   damage: 35
   damageType: 3
   attackSpeed: 1

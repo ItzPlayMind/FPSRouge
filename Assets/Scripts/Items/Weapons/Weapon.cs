@@ -85,7 +85,7 @@ public abstract class Weapon : Item
 
     protected abstract void _Attack(Transform usePoint, CharacterStats attacker);
 
-    public override void Use(Transform usePoint, CharacterStats user)
+    protected override void _Use(Transform usePoint, CharacterStats user)
     {
         Attack(usePoint, user);
     }

@@ -53,7 +53,7 @@ public class ItemDrop : Interactable
             effectDescription.text = item.OffHandEffect.Description;
     }
 
-    public override void Interact(PlayerController player, InteractionType type)
+    public override void _Interact(PlayerController player, InteractionType type)
     {
         pickedUp = true;
         Hands.Hand hand = Hands.Hand.Main;

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fee002c44554ab47970fd9af4d2d442, type: 3}
-  m_Name: Bow
+  m_Name: Book
   m_EditorClassIdentifier: 
-  gfx: {fileID: 5340853586808930193, guid: a802548cf82329e47a54b9036758b35b, type: 3}
+  gfx: {fileID: 9088626654884405986, guid: f68ef02efe117754cb0584e810a352b1, type: 3}
   controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
-  offhandEffect: {fileID: 11400000, guid: ba90fa5bbd99589439e68dcb3adc6f97, type: 2}
-  damage: 15
-  damageType: 2
+  offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+  damage: 25
+  damageType: 4
   attackSpeed: 1
   attackRange: 15
   staminaUsage: 10
-  projectile: {fileID: 5030038378445256666, guid: 88eb8c02fd339ca4c8bf6184a18224b5,
+  projectile: {fileID: 3151850052159157485, guid: bd8f6310dc65de84086617c9758ca854,
     type: 3}
-  force: 50
+  force: 20

@@ -23,7 +23,8 @@ public class Island : NetworkBehaviour
 
     [SerializeField] private bool spawnPlayers;
 
-    [SerializeField] private GameObject portal;
+    [SerializeField] private IslandPortal startPortal;
+    [SerializeField] private IslandPortal endPortal;
 
     [SerializeField] private List<Objective> objectives = new List<Objective>();
 
@@ -33,8 +34,13 @@ public class Island : NetworkBehaviour
 
     [SerializeField] private UnityEvent OnArrive;
 
+
+    private bool isStarted = false;
     private List<Objective> currentObjectives = new List<Objective>();
     private int completeObjectiveCounter = 0;
+
+    public IslandPortal Start { get => startPortal; }
+    public IslandPortal End { get => endPortal; }
 
     public override void OnNetworkSpawn()
     {
@@ -44,7 +50,7 @@ public class Island : NetworkBehaviour
         Setup();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void SpawnIslandNetworkObjectsServerRpc()
     {
         foreach (var item in islandNetworkObjects)
@@ -107,11 +113,25 @@ public class Island : NetworkBehaviour
         }
     }
 
-    private void Arrive()
+    public void Arrive()
     {
-        if (IsOwner)
-            SpawnIslandNetworkObjectsServerRpc();
+        if (isStarted)
+            return;
+        SpawnIslandNetworkObjectsServerRpc(); 
+        ArrivedServerRpc();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void ArrivedServerRpc()
+    {
+        ArrivedClientRpc();
+    }
+
+    [ClientRpc]
+    private void ArrivedClientRpc()
+    {
         OnArrive?.Invoke();
+        isStarted = true;
     }
 
     public void SpawnPlayers()
@@ -128,7 +148,7 @@ public class Island : NetworkBehaviour
         completeObjectiveCounter++;
         if(completeObjectiveCounter >= currentObjectives.Count)
         {
-            portal.SetActive(true);
+            endPortal.gameObject.SetActive(true);
             Complete = true;
             OnObjectivesComplete?.Invoke();
         }
