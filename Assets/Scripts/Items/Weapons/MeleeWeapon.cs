@@ -18,6 +18,7 @@ public class MeleeWeapon : Weapon
                 if (stats == attacker)
                     continue;
                 Debug.Log("Hit " + item.transform.name);
+                OnHit?.Invoke(stats,this);
                 stats.TakeDamage(Damage, DamageType, attacker.NetworkObjectId);
             }
         }

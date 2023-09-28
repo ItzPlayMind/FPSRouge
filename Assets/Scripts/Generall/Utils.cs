@@ -80,6 +80,6 @@ public static class Utils
         return obj.name.ToLower().Replace(" ", "_");
     }
 
-    public static bool IsMagic(DamageType damageType) => damageType != DamageType.Slash && damageType != DamageType.Pierce && damageType != DamageType.Blunt;
+    public static bool IsMagic(DamageType damageType) => damageType != DamageType.Slash && damageType != DamageType.Pierce && damageType != DamageType.Blunt && damageType != DamageType.Bleed;
 
 }

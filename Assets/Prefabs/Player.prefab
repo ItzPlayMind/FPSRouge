@@ -1183,6 +1183,7 @@ GameObject:
   - component: {fileID: 5483312392145495523}
   - component: {fileID: 8897418862432118197}
   - component: {fileID: 5121287526809750592}
+  - component: {fileID: 7978417564732506907}
   - component: {fileID: 1495949308799400950}
   m_Layer: 7
   m_Name: Player
@@ -1243,8 +1244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9208f54dc4eb4f54b994ef325418b0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offHandItem: {fileID: 11400000, guid: 1866d7feeca61274ea1eda30a11753c3, type: 2}
-  mainHandItem: {fileID: 11400000, guid: 01f201b79833c854396719ae8fe7b7a2, type: 2}
+  offHandItem: {fileID: 11400000, guid: dcbc95fd933be3d48a4c465e1cdb747d, type: 2}
+  mainHandItem: {fileID: 11400000, guid: 2b97a1de9128b4a45b8d5ddfb51b39cc, type: 2}
   hands: {fileID: 8778891713420677803}
   attackPoint: {fileID: 6093557705970338562}
   overrideAnimators: 1
@@ -1452,6 +1453,18 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   SlerpPosition: 0
+--- !u!114 &7978417564732506907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3556810003498638302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53160354cc877f947ab037b16bb50a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1495949308799400950
 MonoBehaviour:
   m_ObjectHideFlags: 0

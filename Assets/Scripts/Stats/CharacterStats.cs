@@ -120,6 +120,6 @@ public class CharacterStats : NetworkBehaviour
     private void DieClientRpc()
     {
         isDead = true;
-        Debug.Log(name + " died!");
+
     }
 }

@@ -26,6 +26,17 @@ public static class EffectMethods
         action?.Invoke();
     }
 
+    private static void TimedForLoop(MonoBehaviour obj, System.Action action, int amount, float time) => obj.StartCoroutine(TimedForLoopCoroutine(action, amount, time));
+
+    private static IEnumerator TimedForLoopCoroutine(System.Action action, int amount, float time)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            yield return new WaitForSeconds(time);
+            action?.Invoke();
+        }
+    }
+
     #region Physical
     public static void Physical_OnEquip(Effect effect, Item item, WeaponManager manager)
     {
@@ -73,18 +84,9 @@ public static class EffectMethods
     {
         if (manager.MainHandItem is RangedWeapon)
         {
-            Debug.Log("IS RANGED!");
             effect.VariableStore["OnUse"] = new System.Action<Item, Transform, CharacterStats>((Item item, Transform usePoint, CharacterStats stats) =>
             {
-                Debug.Log("USED!");
-                for (int i = 0; i < effect.Variables[0].Integer; i++)
-                {
-                    WithDelay(manager, () =>
-                    {
-                        Debug.Log("USE AGAIN!");
-                        item.Use(usePoint, stats, false);
-                    }, 0.1f * (i+1));
-                }
+                TimedForLoop(manager, () => item.Use(usePoint, stats, false), effect.Variables[0].Integer, 0.5f);
             });
             manager.MainHandItem.OnUse += (System.Action<Item, Transform, CharacterStats>)effect.VariableStore["OnUse"];
         }
@@ -94,6 +96,33 @@ public static class EffectMethods
         if (item is RangedWeapon)
         {
             manager.MainHandItem.OnUse -= (System.Action<Item, Transform, CharacterStats>)effect.VariableStore["OnUse"];
+        }
+    }
+    #endregion
+
+    #region Bleeding
+    public static void Bleeding_OnEquip(Effect effect, Item offHandItem, WeaponManager manager)
+    {
+        if (manager.MainHandItem is MeleeWeapon)
+        {
+            effect.VariableStore["OnHit"] = new System.Action<CharacterStats, Weapon>((CharacterStats stats, Weapon weapon) =>
+            {
+                int bleedMaxTime = effect.Variables[1].Integer;
+                TimedForLoop(manager, () =>
+                {
+                    if (stats.isDead)
+                        return;
+                    stats.TakeDamage(weapon.Damage * ((effect.Variables[0].Float / bleedMaxTime) / 100f), DamageType.Bleed, manager.NetworkObjectId);
+                }, bleedMaxTime, 1);
+            });
+            (manager.MainHandItem as Weapon).OnHit += (System.Action<CharacterStats, Weapon>)effect.VariableStore["OnHit"];
+        }
+    }
+    public static void Bleeding_OnUnequip(Effect effect, Item item, WeaponManager manager)
+    {
+        if (item is MeleeWeapon)
+        {
+            (manager.MainHandItem as Weapon).OnHit -= (System.Action<CharacterStats, Weapon>)effect.VariableStore["OnHit"];
         }
     }
     #endregion

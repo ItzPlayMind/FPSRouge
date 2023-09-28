@@ -138,7 +138,7 @@ public class PlayerController : NetworkBehaviour
 
     private void HandleAttacking()
     {
-        if (inputManager.PlayerAttackTrigger)
+        if (inputManager.PlayerAttackTrigger || inputManager.PlayerAttackHold)
         {
             weaponManager?.Attack();
         }

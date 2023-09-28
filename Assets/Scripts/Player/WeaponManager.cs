@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using System.Linq;
 
 public class WeaponManager : NetworkBehaviour
 {
@@ -11,6 +12,8 @@ public class WeaponManager : NetworkBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private bool overrideAnimators = true;
 
+    private CustomAnimator animator;
+
     public Item MainHandItem { get => mainHandItem; }
     public Item OffHandItem { get => offHandItem; }
 
@@ -18,20 +21,22 @@ public class WeaponManager : NetworkBehaviour
 
     private CharacterStats stats;
 
-    private float attackTimer = 0;
     private float swapTimer = 0;
 
-    protected bool canUse = false;
+    protected bool canUse = true;
     public bool CanUse { get => canUse; }
 
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         stats = GetComponent<CharacterStats>();
+        animator = GetComponent<CustomAnimator>();
     }
 
     public void SetupHands()
     {
+        if(animator == null)
+            animator = GetComponent<CustomAnimator>();
         hands.gameObject.SetActive(true);
         if (mainHandItem != null)
             mainHandItem = (Weapon)hands.Instantiate(mainHandItem.Clone(), Hands.Hand.Main, null, overrideAnimators);
@@ -42,6 +47,7 @@ public class WeaponManager : NetworkBehaviour
             {
                 mainHandItem.Use(attackPoint, stats);
             };
+        animator.SetAnimator(hands.MainHandAnimator);
     }
 
     public Item GetItem(Hands.Hand hand)
@@ -101,10 +107,6 @@ public class WeaponManager : NetworkBehaviour
         offHandItem?.Passive(AttackPoint, stats);
         if (swapTimer >= 0)
             swapTimer -= Time.deltaTime;
-        if (attackTimer >= 0)
-            attackTimer -= Time.deltaTime;
-        else
-            canUse = true;
     }
 
     public void ChangeItem(Item item, Hands.Hand hand)
@@ -171,16 +173,21 @@ public class WeaponManager : NetworkBehaviour
                     if (mainHandItem is Weapon)
                     {
                         var weapon = (mainHandItem as Weapon);
-                        attackTimer = weapon.AttackSpeed; 
                         if (stats is PlayerStats)
                             (stats as PlayerStats).TakeStamina(weapon.StaminaUsage);
+                        animator.Play("UseOwner", OnAnimationFinished, (1/weapon.AttackSpeed));
                     }
-                    hands.MainHandAnimator.Play("UseOwner");
+                    else
+                        animator.Play("UseOwner", OnAnimationFinished);
                     AttackServerRpc();
                 }
         }
     }
 
+    private void OnAnimationFinished()
+    {
+        canUse = true;
+    }
 
     [ServerRpc]
     private void AttackServerRpc()
@@ -193,7 +200,15 @@ public class WeaponManager : NetworkBehaviour
     {
         if (IsOwner)
             return;
-        hands.MainHandAnimator.Play("UseClient");
+        if (mainHandItem is Weapon)
+        {
+            var weapon = mainHandItem as Weapon;
+            animator.Play("UseClient", null, (1 / weapon.AttackSpeed));
+        }
+        else
+        {
+            animator.Play("UseClient", null);
+        }
     }
 
     private void OnDrawGizmosSelected()

@@ -27,6 +27,7 @@ public class RangedWeapon : Weapon
             CharacterStats stats = target.GetComponent<CharacterStats>();
             if(stats != null)
             {
+                OnHit?.Invoke(stats,this);
                 stats.TakeDamage(Damage, DamageType, spawnerID);
             }
         };

@@ -6,13 +6,20 @@ using UnityEngine;
 public class EnemyStats : CharacterStats
 {
     [SerializeField] private NetworkObject ragdoll;
+    [SerializeField] private UIBar healthbar;
     WeaponManager manager;
+
+    private void Start()
+    {
+        currentHealth.OnValueChanged += (float previous, float current) => OnHealthChange();
+    }
 
     protected override void _OnNetworkSpawn()
     {
         base._OnNetworkSpawn();
         manager = GetComponent<WeaponManager>();
     }
+    private void OnHealthChange() => healthbar.SetBar(currentHealth.Value / MaxHealth);
 
     public override void Die()
     {

@@ -6,6 +6,8 @@ using static Utils;
 
 public abstract class Weapon : Item
 {
+    public System.Action<CharacterStats, Weapon> OnHit;
+
     [SerializeField] private float damage;
 
     private Transform attackPoint;

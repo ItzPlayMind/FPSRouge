@@ -4,5 +4,5 @@ using UnityEngine;
 
 public enum DamageType
 {
-    Slash, Blunt, Pierce, Fire, Lightning, Earth, Ice
+    Bleed, Slash, Blunt, Pierce, Fire, Lightning, Earth, Ice
 }
