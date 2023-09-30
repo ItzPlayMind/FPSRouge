@@ -471,6 +471,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 856fc06314a0abe47aa0e1c32696ca31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onceOnly: 0
   item: {fileID: 0}
   ui: {fileID: 3495671973436789961}
   nameText: {fileID: 7259329071462143391}
@@ -1109,12 +1110,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 0.1
-  m_fontSizeBase: 0.1
+  m_fontSize: 0.085
+  m_fontSizeBase: 0.085
   m_fontWeight: 400
   m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMin: 0.05
+  m_fontSizeMax: 0.1
   m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256

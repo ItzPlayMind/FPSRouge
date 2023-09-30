@@ -15,9 +15,12 @@ MonoBehaviour:
   gfx: {fileID: 3251721438530881238, guid: 5293fc51058f21145b6d7c07dc92a6f3, type: 3}
   controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
   offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
-  damage: 25
-  damageType: 1
-  attackSpeed: 0.75
-  attackRange: 2.5
-  staminaUsage: 25
+  levels:
+  - gfx: {fileID: 3251721438530881238, guid: 5293fc51058f21145b6d7c07dc92a6f3, type: 3}
+    offhandEffect: {fileID: 0}
+    damage: 25
+    damageType: 2
+    attackSpeed: 0.75
+    attackRange: 4
+    staminaUsage: 25
   hitBoxSize: {x: 0.75, y: 1, z: 0.5}

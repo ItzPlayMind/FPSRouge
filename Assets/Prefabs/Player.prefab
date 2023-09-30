@@ -1244,8 +1244,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9208f54dc4eb4f54b994ef325418b0e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offHandItem: {fileID: 11400000, guid: dcbc95fd933be3d48a4c465e1cdb747d, type: 2}
-  mainHandItem: {fileID: 11400000, guid: 2b97a1de9128b4a45b8d5ddfb51b39cc, type: 2}
+  offHandItem: {fileID: 0}
+  mainHandItem: {fileID: 11400000, guid: 1866d7feeca61274ea1eda30a11753c3, type: 2}
   hands: {fileID: 8778891713420677803}
   attackPoint: {fileID: 6093557705970338562}
   overrideAnimators: 1

@@ -129,7 +129,7 @@ public class BasicAI : NetworkBehaviour
             }
             else
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.01f);
+                transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(dir), 0.1f);
             }
         }
     }

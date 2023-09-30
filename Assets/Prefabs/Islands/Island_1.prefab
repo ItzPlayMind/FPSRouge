@@ -8620,7 +8620,6 @@ MonoBehaviour:
     - {fileID: 8130798918616440867}
     - {fileID: 743075796797911111}
     - {fileID: 6985889894529513297}
-    - {fileID: 2912816122511460654}
   - networkObject: {fileID: 4167728230604813764, guid: dd90998a3d04c0749aed58ec77410485,
       type: 3}
     transform:
@@ -8629,6 +8628,10 @@ MonoBehaviour:
     - {fileID: 7355073162833547828}
     - {fileID: 112626446944382990}
     - {fileID: 2801950762450497588}
+  - networkObject: {fileID: 8404860711743139346, guid: 922f2efff4a56ef4590f95a6bf4ff6fc,
+      type: 3}
+    transform:
+    - {fileID: 2912816122511460654}
   spawnPlayers: 0
   startPortal: {fileID: 8469324934791098521}
   endPortal: {fileID: 5862956315439402825}

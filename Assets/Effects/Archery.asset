@@ -17,5 +17,7 @@ MonoBehaviour:
   - type: 2
     stringValue: 
     floatValue: 0
+    floatValueLevelIncrease: 0
     intValue: 1
+    intValueLevelIncrease: 1
     objectValue: {fileID: 0}

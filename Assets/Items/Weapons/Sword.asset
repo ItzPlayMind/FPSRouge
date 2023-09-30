@@ -15,9 +15,41 @@ MonoBehaviour:
   gfx: {fileID: 715858469694040474, guid: a75ba0c08c337c14a8f8025df3646d9c, type: 3}
   controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
   offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
-  damage: 10
-  damageType: 0
-  attackSpeed: 1
-  attackRange: 3
-  staminaUsage: 20
+  levels:
+  - gfx: {fileID: 715858469694040474, guid: a75ba0c08c337c14a8f8025df3646d9c, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+    damage: 15
+    damageType: 1
+    attackSpeed: 1
+    attackRange: 4
+    staminaUsage: 20
+  - gfx: {fileID: 715858469694040474, guid: 69d24e6daa1ac034aac1bd8b5a04d9a2, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+    damage: 25
+    damageType: 1
+    attackSpeed: 1
+    attackRange: 4
+    staminaUsage: 20
+  - gfx: {fileID: 715858469694040474, guid: 54527d344cb96d046809b930561444cb, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+    damage: 35
+    damageType: 1
+    attackSpeed: 1
+    attackRange: 4
+    staminaUsage: 15
+  - gfx: {fileID: 715858469694040474, guid: 85addb082310c1744917d080e8a395f5, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+    damage: 45
+    damageType: 1
+    attackSpeed: 1
+    attackRange: 4
+    staminaUsage: 15
+  - gfx: {fileID: 715858469694040474, guid: ad4272c70d0d12045a09cabe73b6e5a4, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 487e26eed8a9fbe428331cd5fd662eca, type: 2}
+    damage: 55
+    damageType: 0
+    attackSpeed: 1
+    attackRange: 4
+    staminaUsage: 12
+  level: 1
   hitBoxSize: {x: 0.75, y: 1, z: 0.5}
