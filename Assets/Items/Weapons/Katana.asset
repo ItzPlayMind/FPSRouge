@@ -23,4 +23,33 @@ MonoBehaviour:
     attackSpeed: 1.5
     attackRange: 5
     staminaUsage: 15
+  - gfx: {fileID: 715858469694040474, guid: 670c44e9191bb0249a28674eef0cde87, type: 3}
+    offhandEffect: {fileID: 11400000, guid: ea1d854bcfffb0e4299b95e55a078b13, type: 2}
+    damage: 22.5
+    damageType: 1
+    attackSpeed: 1.6
+    attackRange: 5
+    staminaUsage: 15
+  - gfx: {fileID: 715858469694040474, guid: 55c392580a695cc48b7bdac92f97c690, type: 3}
+    offhandEffect: {fileID: 11400000, guid: ea1d854bcfffb0e4299b95e55a078b13, type: 2}
+    damage: 27.5
+    damageType: 1
+    attackSpeed: 1.65
+    attackRange: 5
+    staminaUsage: 15
+  - gfx: {fileID: 715858469694040474, guid: 2c7973c88c151eb479e2e6f1924c4859, type: 3}
+    offhandEffect: {fileID: 11400000, guid: ea1d854bcfffb0e4299b95e55a078b13, type: 2}
+    damage: 32.5
+    damageType: 1
+    attackSpeed: 1.65
+    attackRange: 5
+    staminaUsage: 12.5
+  - gfx: {fileID: 715858469694040474, guid: e0c458494697c1e42bbf630abed94ca1, type: 3}
+    offhandEffect: {fileID: 11400000, guid: ea1d854bcfffb0e4299b95e55a078b13, type: 2}
+    damage: 37.5
+    damageType: 0
+    attackSpeed: 1.75
+    attackRange: 5.5
+    staminaUsage: 12.5
+  level: 1
   hitBoxSize: {x: 0.75, y: 1, z: 0.5}

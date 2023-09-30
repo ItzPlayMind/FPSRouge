@@ -23,4 +23,33 @@ MonoBehaviour:
     attackSpeed: 0.75
     attackRange: 4
     staminaUsage: 25
+  - gfx: {fileID: 3251721438530881238, guid: 60e60cc3368358d448678c39ecd57b95, type: 3}
+    offhandEffect: {fileID: 0}
+    damage: 37.5
+    damageType: 2
+    attackSpeed: 0.75
+    attackRange: 4
+    staminaUsage: 25
+  - gfx: {fileID: 3251721438530881238, guid: 2cba85a9e672b1d4ca36946e281ff08c, type: 3}
+    offhandEffect: {fileID: 0}
+    damage: 50
+    damageType: 2
+    attackSpeed: 0.9
+    attackRange: 4
+    staminaUsage: 20
+  - gfx: {fileID: 3251721438530881238, guid: 867a96d1133b1a44f99b7d5468979bd0, type: 3}
+    offhandEffect: {fileID: 0}
+    damage: 62.5
+    damageType: 2
+    attackSpeed: 0.9
+    attackRange: 5
+    staminaUsage: 20
+  - gfx: {fileID: 3251721438530881238, guid: 369d6bba1fed4d84eae5b2530a43c69a, type: 3}
+    offhandEffect: {fileID: 0}
+    damage: 75
+    damageType: 2
+    attackSpeed: 1
+    attackRange: 5
+    staminaUsage: 17.5
+  level: 1
   hitBoxSize: {x: 0.75, y: 1, z: 0.5}

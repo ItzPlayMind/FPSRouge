@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fee002c44554ab47970fd9af4d2d442, type: 3}
+  m_Name: Wand
+  m_EditorClassIdentifier: 
+  gfx: {fileID: 715858469694040474, guid: 7f6377c9500f3754faafef11ee53d8bf, type: 3}
+  controller: {fileID: 22100000, guid: 105d7afced5f38a4c916789f739170a5, type: 2}
+  offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+  levels:
+  - gfx: {fileID: 715858469694040474, guid: 7f6377c9500f3754faafef11ee53d8bf, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+    damage: 12.5
+    damageType: 7
+    attackSpeed: 2
+    attackRange: 20
+    staminaUsage: 5
+  - gfx: {fileID: 715858469694040474, guid: be41ec57fc4ad92499acb80f4f3e6eeb, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+    damage: 17.5
+    damageType: 7
+    attackSpeed: 2
+    attackRange: 20
+    staminaUsage: 5
+  - gfx: {fileID: 715858469694040474, guid: f406019ffd66f0c47ae7c5996b00f9fb, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+    damage: 22.5
+    damageType: 7
+    attackSpeed: 2.1
+    attackRange: 20
+    staminaUsage: 5
+  - gfx: {fileID: 715858469694040474, guid: 4356fc0cb1f97a94c83c3feebb9c1a10, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+    damage: 27.5
+    damageType: 7
+    attackSpeed: 2.1
+    attackRange: 20
+    staminaUsage: 5
+  - gfx: {fileID: 715858469694040474, guid: b4a098dea6d90af4296ded9d172f68cd, type: 3}
+    offhandEffect: {fileID: 11400000, guid: 041723e3f341c9d4489d29b32f8c5609, type: 2}
+    damage: 32.5
+    damageType: 7
+    attackSpeed: 2.2
+    attackRange: 20
+    staminaUsage: 2.5
+  level: 1
+  projectile: {fileID: 3151850052159157485, guid: bd8f6310dc65de84086617c9758ca854,
+    type: 3}
+  force: 30

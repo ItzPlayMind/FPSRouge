@@ -63,9 +63,6 @@ public class PlayerController : NetworkBehaviour
         HandleCharacterInput();
         HandleAttacking();
         HandleInteract();
-
-        animator.SetFloat("SpeedX", motor.Velocity.x);
-        animator.SetFloat("SpeedZ", -motor.Velocity.z);
     }
 
     private Interactable lastInteractable = null;
@@ -166,6 +163,11 @@ public class PlayerController : NetworkBehaviour
 
         if (characterInputs.JumpDown)
             animator.Play("Jump");
+
+        float SpeedX = -Vector3.Dot(motor.Velocity.normalized, transform.right);
+        float SpeedZ = Vector3.Dot(motor.Velocity.normalized, transform.forward);
+        animator.SetFloat("SpeedX", SpeedX);
+        animator.SetFloat("SpeedZ", SpeedZ);
 
         // Apply inputs to character
         character.SetInputs(ref characterInputs);
