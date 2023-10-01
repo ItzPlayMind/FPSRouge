@@ -20,19 +20,19 @@ public class SpawnManager : NetworkBehaviour
     [SerializeField] private ItemDrop itemdrop;
     [SerializeField] private MaterialDrop materialDrop;
 
-    public void Spawn<T>(string uid, Vector3 position, Vector3 dir = default, float force = 0)
+    public void Spawn<T>(string uid, object metaData, Vector3 position, Vector3 dir = default, float force = 0)
     {
         var type = typeof(T);
         if (type == typeof(Item))
-            SpawnItemDrop(uid, position, dir, force);
+            SpawnItemDrop(uid, metaData, position, dir, force);
         if (type == typeof(Material))
             SpawnMaterialDrop(uid, position, dir, force);
     }
 
-    public void Spawn<T>(T item, Vector3 position, Vector3 dir = default, float force = 0)
+    public void Spawn<T>(T item, object metaData, Vector3 position, Vector3 dir = default, float force = 0)
     {
         if (item is Item)
-            SpawnItemDrop((item as Item).UID(), position, dir, force);
+            SpawnItemDrop((item as Item).UID(), metaData, position, dir, force);
         if (item is Material)
             SpawnMaterialDrop((item as Material).UID(), position, dir, force);
     }
@@ -64,28 +64,28 @@ public class SpawnManager : NetworkBehaviour
         }
     }
 
-    private void SpawnItemDrop(string itemUid, Vector3 position, Vector3 dir = default, float force = 0)
+    private void SpawnItemDrop(string itemUid, object metaData, Vector3 position, Vector3 dir = default, float force = 0)
     {
-        SpawnItemDropServerRpc(itemUid, position, dir, force);
+        SpawnItemDropServerRpc(itemUid, JsonUtility.ToJson(metaData), position, dir, force);
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnItemDropServerRpc(string itemUid,Vector3 pos, Vector3 dir, float force)
+    private void SpawnItemDropServerRpc(string itemUid, string metaData,Vector3 pos, Vector3 dir, float force)
     {
         var drop = Instantiate(itemdrop, pos, Quaternion.identity);
         drop.GetComponent<NetworkObject>()?.Spawn();
         drop.GetComponent<Rigidbody>()?.AddForce(dir * force, ForceMode.Impulse);
-        ApplyItemToItemDropClientRpc(drop.NetworkObjectId, itemUid);
+        ApplyItemToItemDropClientRpc(drop.NetworkObjectId, itemUid, metaData);
     }
 
     [ClientRpc]
-    private void ApplyItemToItemDropClientRpc(ulong dropId, string itemUid)
+    private void ApplyItemToItemDropClientRpc(ulong dropId, string itemUid, string metaData)
     {
-        Debug.Log(itemUid);
+        Debug.Log(itemUid + " " + metaData);
         var obj = GetNetworkObject(dropId).GetComponent<ItemDrop>();
         if (obj != null)
         {
-            obj.SetItem(ScriptableObjectManager.Instance.Get<Item>(itemUid).Clone());
+            obj.SetItem(ScriptableObjectManager.Instance.Get<Item>(itemUid,metaData));
             obj.Setup();
         }
     }
@@ -115,7 +115,10 @@ public class SpawnManager : NetworkBehaviour
     [ClientRpc]
     private void SpawnProjectileClientRpc(ulong attackerID, ulong projID, ClientRpcParams clientRpcParams = default)
     {
-        ((RangedWeapon)GetNetworkObject(attackerID)?.GetComponent<WeaponManager>()?.GetItem(Hands.Hand.Main))?.OnProjectileSpawned(attackerID,GetNetworkObject(projID).GetComponent<Projectile>());
+        var proj = GetNetworkObject(projID).GetComponent<Projectile>();
+        var attacker = GetNetworkObject(attackerID);
+        proj.SetSpawner(attacker.gameObject);
+        ((RangedWeapon)attacker?.GetComponent<WeaponManager>()?.GetItem(Hands.Hand.Main))?.OnProjectileSpawned(attackerID, proj);
     }
 
     public NetworkObject GetNetworkObjectById(ulong id) => GetNetworkObject(id);

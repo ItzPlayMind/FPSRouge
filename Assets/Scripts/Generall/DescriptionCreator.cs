@@ -8,14 +8,16 @@ public static class DescriptionCreator
 
     static Dictionary<string, string> wordReplacements = new Dictionary<string, string>()
     {
-        {"Physical","<color=\"yellow\">Physical</color>" },
-        {"Magical","<color=\"pink\">Magical</color>" },
-        {"Fire","<color=F06723>Fire</color>" },
-        {"Lightning","<color=95EAF9>Lightning</color>" },
-        {"Earth","<color=3C7F07>Earth</color>" },
-        {"Blunt","<color=9294B1>Blunt</color>" },
-        {"Slash","<color=DC1310>Slash</color>" },
-        {"Pierce","<color=678947>Pierce</color>" },
+        {"Physical","<color=#FFEA00>Physical</color>" },
+        {"Magical","<color=#EB16FA>Magical</color>" },
+        {"Fire","<color=#F06723>Fire</color>" },
+        {"Lightning","<color=#95EAF9>Lightning</color>" },
+        {"Earth","<color=#3C7F07>Earth</color>" },
+        {"Blunt","<color=#9294B1>Blunt</color>" },
+        {"Slash","<color=#DC1310>Slash</color>" },
+        {"Pierce","<color=#678947>Pierce</color>" },
+        {"Melee","<color=#B4C288>Melee</color>" },
+        {"Ranged","<color=#9088C2>Ranged</color>" },
     };
 
     public static string Generate(string description, params object[] objs)
@@ -44,13 +46,12 @@ public static class DescriptionCreator
                 if (value >= objs.Length)
                     result += ERROR_MESSAGE;
                 else
-                    result += objs[value];
+                    result += $"<color=green>{objs[value]}</color>";
                 result += item.Substring(1);
             }
             else
                 result += item;
         }
-
         return result;
     }
 }

@@ -19,13 +19,18 @@ public class ScriptableObjectManager : MonoBehaviour
     [SerializeField] private List<Item> items = new List<Item>();
     [SerializeField] private List<Material> materials = new List<Material>();
 
-    public T Get<T>(string uid) where T : ScriptableObject
+    public T Get<T>(string uid, string metaData = "") where T : ScriptableObject
     {
         var type = typeof(T);
         if (type == typeof(Material))
-            return (T)(ScriptableObject)materials.Find(x => x.UID() == uid);
+            return (T)(ScriptableObject)materials.Find(x => x.UID() == uid).Clone();
         if (type == typeof(Item))
-            return (T)(ScriptableObject)items.Find(x => x.UID() == uid);
+        {
+            var item = items.Find(x => x.UID() == uid).Clone();
+            if(item is Weapon)
+                item.FromMetadata(JsonUtility.FromJson<Weapon.Metadata>(metaData));
+            return (T)(ScriptableObject)item.Clone();
+        }
         return null;
     }
 

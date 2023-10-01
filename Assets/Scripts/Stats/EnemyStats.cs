@@ -24,7 +24,8 @@ public class EnemyStats : CharacterStats
     public override void Die()
     {
         base.Die();
-        SpawnManager.Instance.Spawn<Item>(manager.GetItem(Hands.Hand.Main).UID(), transform.position + Vector3.up);
+        var item = manager.GetItem(Hands.Hand.Main);
+        SpawnManager.Instance.Spawn<Item>(item.UID(), item.GetMetadata(), transform.position + Vector3.up);
         SpawnRagdollServerRpc();
         networkObject?.Despawn(true);
     }

@@ -39,42 +39,6 @@ public static class Utils
         }
     }
 
-
-    [System.Serializable]
-    public class CustomValue
-    {
-        public enum Type
-        {
-            String, Float, Integer, Object
-        }
-        [SerializeField] private Type type;
-        [SerializeField] private string stringValue;
-        public string String { get => stringValue; }
-        [SerializeField] private float floatValue;
-        public float Float { get => floatValue; }
-        [SerializeField] private int intValue;
-        public int Integer { get => intValue; }
-        [SerializeField] private Object objectValue;
-        public Object Object { get => objectValue; }
-
-        public override string ToString()
-        {
-            switch (type)
-            {
-                case Type.String:
-                    return stringValue;
-                case Type.Float:
-                    return floatValue.ToString();
-                case Type.Integer:
-                    return intValue.ToString();
-                case Type.Object:
-                    return objectValue.ToString();
-                default:
-                    return "";
-            }
-        }
-    }
-
     public static string UID(this ScriptableObject obj)
     {
         return obj.name.ToLower().Replace(" ", "_");

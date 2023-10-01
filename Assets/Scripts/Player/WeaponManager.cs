@@ -156,10 +156,10 @@ public class WeaponManager : NetworkBehaviour
         offHandItem = mainHandItem;
         mainHandItem = item;
 
-        hands.Instantiate(offHandItem, Hands.Hand.Off, this, overrideAnimators);
         hands.Instantiate(mainHandItem, Hands.Hand.Main, null, overrideAnimators);
-        if (offHandItem != null)
-            offHandItem.SetupOnEquip(this);
+        hands.Instantiate(offHandItem, Hands.Hand.Off, this, overrideAnimators);
+        /*if (offHandItem != null)
+            offHandItem.SetupOnEquip(this);*/
     }
 
     public void Attack()
@@ -175,7 +175,12 @@ public class WeaponManager : NetworkBehaviour
                         var weapon = (mainHandItem as Weapon);
                         if (stats is PlayerStats)
                             (stats as PlayerStats).TakeStamina(weapon.StaminaUsage);
-                        animator.Play("UseOwner", OnAnimationFinished, (1/weapon.AttackSpeed));
+                        weapon.Trail?.Play();
+                        animator.Play("UseOwner", ()=>
+                        {
+                            OnAnimationFinished();
+                            weapon.Trail?.Stop();
+                        }, (1/weapon.AttackSpeed));
                     }
                     else
                         animator.Play("UseOwner", OnAnimationFinished);
@@ -203,7 +208,11 @@ public class WeaponManager : NetworkBehaviour
         if (mainHandItem is Weapon)
         {
             var weapon = mainHandItem as Weapon;
-            animator.Play("UseClient", null, (1 / weapon.AttackSpeed));
+            weapon.Trail?.Play();
+            animator.Play("UseClient", ()=>
+            {
+                weapon.Trail?.Stop();
+            }, (1 / weapon.AttackSpeed));
         }
         else
         {

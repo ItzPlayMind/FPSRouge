@@ -5,12 +5,17 @@ using UnityEngine;
 
 public class Projectile : NetworkBehaviour
 {
+    [SerializeField] private LayerMask hitMask;
     [SerializeField] private float despawnTime = 5f;
     public System.Action<GameObject> OnTargetHit { get; set; }
 
     private Rigidbody rb;
 
     private bool Hit;
+
+    private GameObject spawner;
+
+    public void SetSpawner(GameObject spawner) => this.spawner = spawner;
 
     public override void OnNetworkSpawn()
     {
@@ -28,8 +33,10 @@ public class Projectile : NetworkBehaviour
             return;
 
         RaycastHit hit;
-        if(Physics.Linecast(lastPosition,transform.position, out hit))
+        if(Physics.Linecast(lastPosition,transform.position, out hit, hitMask))
         {
+            if (hit.transform.gameObject == spawner)
+                return;
             Hit = true;
             OnTargetHit?.Invoke(hit.transform.gameObject);
             rb.isKinematic = true;

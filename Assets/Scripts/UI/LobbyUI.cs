@@ -28,17 +28,25 @@ public class LobbyUI : MonoBehaviour
         NetworkManager.Singleton.OnClientDisconnectCallback += RemoveFromPlayerList;
     }
 
+    public void OnDisconnect()
+    {
+        foreach (var item in playerIds)
+            Destroy(item.Value);
+        playerIds.Clear();
+    }
+
     private void AddToPlayerList(ulong id)
     {
         var idText = Instantiate(playerIdText, playerList);
         idText.text = id == NetworkManager.Singleton.LocalClientId ?
-            "<color=red>" + id.ToString() + "</color>" :
+            "You" :
             id.ToString();
-        playerIds.Add(id, idText.gameObject);
+        playerIds[id] = idText.gameObject;
     }
 
     private void RemoveFromPlayerList(ulong id)
     {
-        Destroy(playerIds[id]);
+        if (playerIds.ContainsKey(id))
+            Destroy(playerIds[id]);
     }
 }

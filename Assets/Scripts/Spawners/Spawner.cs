@@ -23,7 +23,16 @@ public class Spawner : NetworkBehaviour
         for (int i = 0; i < items; i++)
         {
             var loot = lootTable.Generate();
-            SpawnManager.Instance.Spawn(loot, transform.position, RandomVector3(forceRange.min,forceRange.max), force);
+            if (loot is Weapon)
+            {
+                var weapon = loot as Weapon;
+                int level = Random.Range(1, weapon.MaxLevel);
+                Debug.Log(level);
+                Weapon.Metadata data = new Weapon.Metadata(level);
+                SpawnManager.Instance.Spawn(loot, data, transform.position, RandomVector3(forceRange.min, forceRange.max), force);
+                continue;
+            }
+            SpawnManager.Instance.Spawn(loot, null, transform.position, RandomVector3(forceRange.min,forceRange.max), force);
         }
     }
 }
