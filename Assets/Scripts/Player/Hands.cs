@@ -9,6 +9,8 @@ public class Hands : MonoBehaviour
         Off, Main
     }
 
+    public System.Action<Item, Transform, Hand> OnInstantiate;
+
     [SerializeField] private Transform offHandTransform;
     [SerializeField] private Transform mainHandTransform;
     [SerializeField] private AnimationEventSender attackEventSender;
@@ -47,6 +49,7 @@ public class Hands : MonoBehaviour
                 break;
         }
         obj.Instantiate(spot, manager);
+        OnInstantiate?.Invoke(obj, spot, hand);
         return obj;
     }
 }

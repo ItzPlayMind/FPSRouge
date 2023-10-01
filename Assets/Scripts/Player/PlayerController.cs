@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
+
 public class PlayerController : NetworkBehaviour
 {
     [SerializeField] private CharacterController character;
@@ -13,6 +15,14 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float interactRange = 5f;
 
     [SerializeField] private Animator animator;
+
+    
+    private RigBuilder leftHandRigBuilder;
+    private TwoBoneIKConstraint leftHandBone;
+    private Animator leftHandAnimator;
+    private RigBuilder rightHandRigBuilder;
+    private TwoBoneIKConstraint rightHandBone;
+    private Animator rightHandAnimator;
 
     private KinematicCharacterMotor motor;
     private PlayerStats stats;
@@ -45,6 +55,30 @@ public class PlayerController : NetworkBehaviour
         playerCamera = Camera.main;
         weaponManager = GetComponent<WeaponManager>();
         var hands = Camera.main.transform.Find("Hands")?.GetComponent<Hands>();
+        var fpsHands = hands.transform.Find("FirstPersonHands");
+        rightHandRigBuilder = fpsHands.Find("RigBuilderRight").GetComponent<RigBuilder>();
+        leftHandRigBuilder = fpsHands.Find("RigBuilderLeft").GetComponent<RigBuilder>();
+        rightHandBone = rightHandRigBuilder.transform.Find("RigRight").Find("HandRight").GetComponent<TwoBoneIKConstraint>();
+        leftHandBone = leftHandRigBuilder.transform.Find("RigLeft").Find("HandLeft").GetComponent<TwoBoneIKConstraint>();
+        rightHandAnimator = rightHandRigBuilder.GetComponent<Animator>();
+        leftHandAnimator = leftHandRigBuilder.GetComponent<Animator>();
+        hands.OnInstantiate += (Item item, Transform spot, Hands.Hand hand) =>
+        {
+            var handPoint = item.GetHandPoint(hand);
+            switch (hand)
+            {
+                case Hands.Hand.Main:
+                    rightHandBone.data.target = handPoint.transform;
+                    rightHandRigBuilder.Build();
+                    rightHandAnimator.SetBool("Open", handPoint.Open);
+                    break;
+                case Hands.Hand.Off:
+                    leftHandBone.data.target = handPoint.transform;
+                    leftHandRigBuilder.Build();
+                    leftHandAnimator.SetBool("Open", handPoint.Open);
+                    break;
+            }
+        };
         hands.GetComponent<SwayAndBob>().SetController(this);
         weaponManager.SetHands(hands);
         weaponManager.SetAttackPoint(playerCamera.transform);
