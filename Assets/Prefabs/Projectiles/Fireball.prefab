@@ -101,9 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702b5024ec046db4299d6b3b779e6f6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
   hitMask:
     serializedVersion: 2
     m_Bits: 7671
+  radius: 0.5
   despawnTime: 5
 --- !u!114 &6760564403040890141
 MonoBehaviour:

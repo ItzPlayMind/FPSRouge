@@ -120,6 +120,7 @@ GameObject:
   - component: {fileID: 7051807931496498146}
   - component: {fileID: 7663309539574224447}
   - component: {fileID: 5998626839178006419}
+  - component: {fileID: 4834782985915489663}
   m_Layer: 8
   m_Name: Lever
   m_TagString: Untagged
@@ -243,6 +244,23 @@ MonoBehaviour:
     TriggerNameHash: -662453572
     TransitionIndex: 0
   m_Animator: {fileID: 7663309539574224447}
+--- !u!114 &4834782985915489663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4036746392128132529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da07b7b0741b56247a6083dc01aec4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemySpawnList: {fileID: 11400000, guid: 879bdb66efdfa2247a3d8ee7176548ed, type: 2}
+  spawnRange: 5
+  enemyAmount:
+    min: 3
+    max: 5
 --- !u!1 &4112899247840176168
 GameObject:
   m_ObjectHideFlags: 0
