@@ -12,10 +12,12 @@ public class MeshDestroy : MonoBehaviour
 
     public int CutCascades = 1;
     public float ExplodeForce = 0;
+    public MeshFilter meshFilter;
 
     public void DestroyMesh(float timeForPartsToDisappear = 5f)
     {
-        var originalMesh = GetComponent<MeshFilter>().mesh;
+        meshFilter = meshFilter ?? GetComponent<MeshFilter>();
+        var originalMesh = meshFilter.mesh;
         originalMesh.RecalculateBounds();
         var parts = new List<PartMesh>();
         var subParts = new List<PartMesh>();
@@ -59,7 +61,7 @@ public class MeshDestroy : MonoBehaviour
             Destroy(parts[i].GameObject, timeForPartsToDisappear);
         }
 
-        Destroy(gameObject);
+        Destroy(meshFilter.gameObject);
     }
 
     private PartMesh GenerateMesh(PartMesh original, Plane plane, bool left)
@@ -259,7 +261,7 @@ public class MeshDestroy : MonoBehaviour
             GameObject.transform.localScale = original.transform.localScale;
 
             var mesh = new Mesh();
-            mesh.name = original.GetComponent<MeshFilter>().mesh.name;
+            mesh.name = original.meshFilter.mesh.name;
 
             mesh.vertices = Vertices;
             mesh.normals = Normals;
@@ -269,7 +271,7 @@ public class MeshDestroy : MonoBehaviour
             Bounds = mesh.bounds;
 
             var renderer = GameObject.AddComponent<MeshRenderer>();
-            renderer.materials = original.GetComponent<MeshRenderer>().materials;
+            renderer.materials = original.meshFilter.GetComponent<MeshRenderer>().materials;
 
             var filter = GameObject.AddComponent<MeshFilter>();
             filter.mesh = mesh;

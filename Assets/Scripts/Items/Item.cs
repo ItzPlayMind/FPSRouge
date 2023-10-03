@@ -33,6 +33,21 @@ public abstract class Item : ScriptableObject
             OnUse?.Invoke(this, usePoint, user);
     }
 
+    public HandPoint GetHandPoint(Hands.Hand hand)
+    {
+        string handPointName = "";
+        switch (hand)
+        {
+            case Hands.Hand.Main:
+                handPointName = "RightHandPoint";
+                break;
+            case Hands.Hand.Off:
+                handPointName = "LeftHandPoint";
+                break;
+        }
+        return activeGameObject?.transform.Find(handPointName)?.GetComponent<HandPoint>();
+    }
+
     public void Passive(Transform usePoint, CharacterStats user) => offhandEffect?.Passive(this, usePoint, user);
     public abstract bool CanUse(CharacterStats user);
 

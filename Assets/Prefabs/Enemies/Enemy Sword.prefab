@@ -1693,7 +1693,7 @@ GameObject:
   - component: {fileID: 4546457572499074638}
   - component: {fileID: 4542234263309552863}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: Enemy Sword
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1774,7 +1774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offHandItem: {fileID: 0}
-  mainHandItem: {fileID: 11400000, guid: a8de2e75fbd5f84448b39787e51fa09d, type: 2}
+  mainHandItem: {fileID: 11400000, guid: faf4c1cd17857e2409bac17ade810da5, type: 2}
   hands: {fileID: 1353443626894087986}
   attackPoint: {fileID: 8342683156071851161}
   overrideAnimators: 0
