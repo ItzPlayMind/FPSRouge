@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class EnemyStats : CharacterStats
 {
+    [SerializeField] private LootTable loot;
     [SerializeField] private NetworkObject ragdoll;
     [SerializeField] private UIBar healthbar;
     WeaponManager manager;
@@ -26,6 +27,12 @@ public class EnemyStats : CharacterStats
         base.Die();
         var item = manager.GetItem(Hands.Hand.Main);
         SpawnManager.Instance.Spawn<Item>(item.UID(), item.GetMetadata(), transform.position + Vector3.up);
+        if (loot != null)
+        {
+            var lootItem = loot.Generate();
+            if (lootItem != null)
+                SpawnManager.Instance.Spawn(lootItem, null, transform.position + Vector3.up);
+        }
         SpawnRagdollServerRpc();
         networkObject?.Despawn(true);
     }

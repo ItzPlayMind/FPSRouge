@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
+using System.Linq;
 using static Utils;
 
 public abstract class Weapon : Item
@@ -23,10 +24,12 @@ public abstract class Weapon : Item
     public class Metadata
     {
         public int level = 1;
+        public string[] effects;
 
-        public Metadata(int level)
+        public Metadata(int level, string[] effects = null)
         {
             this.level = level;
+            this.effects = effects;
         }
     }
 
@@ -102,9 +105,10 @@ public abstract class Weapon : Item
 
     public override GameObject Instantiate(Transform transform, WeaponManager manager = null)
     {
-        offhandEffect = levels[level - 1].offhandEffect?.Clone();
-        offhandEffect?.SetLevel(level);
-        offhandEffect?.Setup();
+        if(levels[level - 1].offhandEffect != null && offhandEffects.Count == 0)
+            offhandEffects.Add(levels[level - 1].offhandEffect.Clone());
+        offhandEffects.ForEach(x => x.SetLevel(level));
+        offhandEffects.ForEach(x => x.Setup());
         if (Active != null)
         {
             Destroy(Active);
@@ -115,6 +119,18 @@ public abstract class Weapon : Item
         if (manager != null)
             SetupOnEquip(manager);
         return Active;
+    }
+
+    public void AddEffect(Effect effect, WeaponManager manager = null)
+    {
+        if (effect == null)
+            return;
+        var eff = effect.Clone();
+        offhandEffects.Add(eff);
+        eff.SetLevel(level);
+        eff.Setup();
+        if (manager != null)
+            eff.OnEquip(this, manager);
     }
 
     protected override void OnInstantiate(Transform transform, WeaponManager manager)
@@ -140,12 +156,20 @@ public abstract class Weapon : Item
         Attack(usePoint, user);
     }
 
-    public override object GetMetadata() => new Metadata(level);
+    public override object GetMetadata() => new Metadata(level, offhandEffects.Select(x=>x.UID()).ToArray());
     public override void FromMetadata(object metaData)
     {
         if (metaData is not Metadata)
             return;
         var data = metaData as Metadata;
         level = data.level;
+        if(data.effects != null)
+        {
+            foreach (var effectID in data.effects)
+            {
+                var effect = ScriptableObjectManager.Instance.Get<Effect>(effectID);
+                AddEffect(effect);
+            }
+        }
     }
 }

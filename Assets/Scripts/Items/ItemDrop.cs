@@ -49,8 +49,8 @@ public class ItemDrop : Interactable
             staminaField.gameObject.SetActive(false);
             speedField.gameObject.SetActive(false);
         }
-        if(item.OffHandEffect != null)
-            effectDescription.text = item.OffHandEffect.Description;
+        if(item.OffHandEffects != null && item.OffHandEffects.Count > 0)
+            effectDescription.text = item.OffHandEffects[0].Description;
     }
 
     public override void _Interact(PlayerController player, InteractionType type)

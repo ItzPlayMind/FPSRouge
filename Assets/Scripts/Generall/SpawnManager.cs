@@ -19,6 +19,7 @@ public class SpawnManager : NetworkBehaviour
 
     [SerializeField] private ItemDrop itemdrop;
     [SerializeField] private MaterialDrop materialDrop;
+    [SerializeField] private EffectDrop effectDrop;
 
     public void Spawn<T>(string uid, object metaData, Vector3 position, Vector3 dir = default, float force = 0)
     {
@@ -27,6 +28,8 @@ public class SpawnManager : NetworkBehaviour
             SpawnItemDrop(uid, metaData, position, dir, force);
         if (type == typeof(Material))
             SpawnMaterialDrop(uid, position, dir, force);
+        if (type == typeof(Effect))
+            SpawnEffectDrop(uid, position, dir, force);
     }
 
     public void Spawn<T>(T item, object metaData, Vector3 position, Vector3 dir = default, float force = 0)
@@ -35,6 +38,8 @@ public class SpawnManager : NetworkBehaviour
             SpawnItemDrop((item as Item).UID(), metaData, position, dir, force);
         if (item is Material)
             SpawnMaterialDrop((item as Material).UID(), position, dir, force);
+        if (item is Effect)
+            SpawnEffectDrop((item as Effect).UID(), position, dir, force);
     }
 
     private void SpawnMaterialDrop(string materialUid, Vector3 position, Vector3 dir = default, float force = 0)
@@ -60,6 +65,33 @@ public class SpawnManager : NetworkBehaviour
             var material = ScriptableObjectManager.Instance.Get<Material>(materialUid).Clone();
             Debug.Log(material.UID());
             obj.SetMaterial(material);
+            obj.Setup();
+        }
+    }
+
+    private void SpawnEffectDrop(string materialUid, Vector3 position, Vector3 dir = default, float force = 0)
+    {
+        SpawnEffectDropServerRpc(materialUid, position, dir, force);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnEffectDropServerRpc(string materialUid, Vector3 pos, Vector3 dir, float force)
+    {
+        var drop = Instantiate(effectDrop, pos, Quaternion.identity);
+        drop.GetComponent<NetworkObject>()?.Spawn();
+        drop.GetComponent<Rigidbody>()?.AddForce(dir * force, ForceMode.Impulse);
+        ApplyEffectToEffectDropClientRpc(drop.NetworkObjectId, materialUid);
+    }
+
+    [ClientRpc]
+    private void ApplyEffectToEffectDropClientRpc(ulong dropId, string materialUid)
+    {
+        var obj = GetNetworkObject(dropId).GetComponent<EffectDrop>();
+        if (obj != null)
+        {
+            var effect = ScriptableObjectManager.Instance.Get<Effect>(materialUid).Clone();
+            Debug.Log(effect.UID());
+            obj.SetEffect(effect);
             obj.Setup();
         }
     }

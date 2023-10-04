@@ -16,21 +16,22 @@ public class ScriptableObjectManager : MonoBehaviour
 
     public static ScriptableObjectManager Instance { get => instance; }
 
-    [SerializeField] private List<Item> items = new List<Item>();
-    [SerializeField] private List<Material> materials = new List<Material>();
+    [SerializeField] private ScriptableObjectList scriptableObjectList;
 
     public T Get<T>(string uid, string metaData = "") where T : ScriptableObject
     {
         var type = typeof(T);
         if (type == typeof(Material))
-            return (T)(ScriptableObject)materials.Find(x => x.UID() == uid).Clone();
+            return (T)(ScriptableObject)scriptableObjectList.materials.Find(x => x.UID() == uid).Clone();
         if (type == typeof(Item))
         {
-            var item = items.Find(x => x.UID() == uid).Clone();
+            var item = scriptableObjectList.items.Find(x => x.UID() == uid).Clone();
             if(item is Weapon)
                 item.FromMetadata(JsonUtility.FromJson<Weapon.Metadata>(metaData));
             return (T)(ScriptableObject)item.Clone();
         }
+        if (type == typeof(Effect))
+            return (T)(ScriptableObject)scriptableObjectList.effects.Find(x => x.UID() == uid).Clone();
         return null;
     }
 
@@ -38,9 +39,11 @@ public class ScriptableObjectManager : MonoBehaviour
     {
         var type = typeof(T);
         if (type == typeof(Item))
-            return (T)(ScriptableObject)items[Random.Range(0, items.Count)];
+            return (T)(ScriptableObject)scriptableObjectList.items[Random.Range(0, scriptableObjectList.items.Count)];
         if (type == typeof(Material))
-            return (T)(ScriptableObject)materials[Random.Range(0, materials.Count)];
+            return (T)(ScriptableObject)scriptableObjectList.materials[Random.Range(0, scriptableObjectList.materials.Count)];
+        if (type == typeof(Effect))
+            return (T)(ScriptableObject)scriptableObjectList.effects[Random.Range(0, scriptableObjectList.effects.Count)];
         return null;
     }
 }

@@ -12,9 +12,9 @@ public abstract class Item : ScriptableObject
 
     [SerializeField] private GameObject gfx;
     [SerializeField] private AnimatorOverrideController controller;
-    [SerializeField] protected Effect offhandEffect;
+    [SerializeField] protected List<Effect> offhandEffects = new List<Effect>();
 
-    public Effect OffHandEffect { get => offhandEffect; }
+    public List<Effect> OffHandEffects { get => offhandEffects; }
 
     private GameObject activeGameObject;
     protected GameObject Active { get => activeGameObject; set
@@ -48,12 +48,12 @@ public abstract class Item : ScriptableObject
         return activeGameObject?.transform.Find(handPointName)?.GetComponent<HandPoint>();
     }
 
-    public void Passive(Transform usePoint, CharacterStats user) => offhandEffect?.Passive(this, usePoint, user);
+    public void Passive(Transform usePoint, CharacterStats user) => offhandEffects.ForEach(x=>x.Passive(this, usePoint, user));
     public abstract bool CanUse(CharacterStats user);
 
     public virtual GameObject Instantiate(Transform transform, WeaponManager manager = null)
     {
-        offhandEffect?.Setup();
+        offhandEffects.ForEach(x => x.Setup());
         if (activeGameObject != null)
         {
             Destroy(activeGameObject);
@@ -70,13 +70,13 @@ public abstract class Item : ScriptableObject
 
     public virtual void SetupOnEquip(WeaponManager manager = null)
     {
-        offhandEffect?.OnEquip(this, manager);
+        offhandEffects.ForEach(x => x.OnEquip(this, manager));
     }
 
     public void Destroy(WeaponManager manager = null)
     {
         if (manager != null)
-            offhandEffect?.OnUnequip(this, manager);
+            offhandEffects.ForEach(x => x.OnUnequip(this, manager));
         if (activeGameObject != null)
         {
             GameObject.Destroy(activeGameObject);

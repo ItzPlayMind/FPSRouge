@@ -1355,6 +1355,8 @@ MonoBehaviour:
     type: 3}
   materialDrop: {fileID: 488444418840983102, guid: aeafe04d82da9cf44a83c2feda606a6d,
     type: 3}
+  effectDrop: {fileID: 8374889978280605460, guid: 4d4f2471f76b16140b7a1e5975c1f1bd,
+    type: 3}
 --- !u!114 &823403393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3972,21 +3974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0960b043302727a439b9e5f37def6238, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: 1866d7feeca61274ea1eda30a11753c3, type: 2}
-  - {fileID: 11400000, guid: a8de2e75fbd5f84448b39787e51fa09d, type: 2}
-  - {fileID: 11400000, guid: faf4c1cd17857e2409bac17ade810da5, type: 2}
-  - {fileID: 11400000, guid: 8ddfd25959d061c4f8a947bb2458ec80, type: 2}
-  - {fileID: 11400000, guid: 01f201b79833c854396719ae8fe7b7a2, type: 2}
-  materials:
-  - {fileID: 11400000, guid: 87dd7a1c35791664d83dab90d576f823, type: 2}
-  - {fileID: 11400000, guid: 2d705c35ec89f2b45bdb7c329844f69b, type: 2}
-  - {fileID: 11400000, guid: d5225aaf8aaf70f4296b4d7a9cb0ea9e, type: 2}
-  - {fileID: 11400000, guid: b90c8f2090e06e744975b0f893edbf90, type: 2}
-  - {fileID: 11400000, guid: 9e8209b7efc9f9f4e89b4f7bf60967d2, type: 2}
-  - {fileID: 11400000, guid: e84926c5817a85a4eaf27fadca35168c, type: 2}
-  - {fileID: 11400000, guid: 1d8dda1d1b6c6f349b8707f05183d820, type: 2}
-  - {fileID: 11400000, guid: d82428370b23b2f40a4a09c71ab22903, type: 2}
+  scriptableObjectList: {fileID: 0}
 --- !u!1 &1931472513
 GameObject:
   m_ObjectHideFlags: 0
