@@ -76,18 +76,20 @@ public class IslandGenerator : NetworkBehaviour
                 Random.Range(-maxSearchSize.y / factor, maxSearchSize.y / factor),
                 Random.Range(-maxSearchSize.z / factor, maxSearchSize.z / factor))* factor;
 
+            bool intersactsWithOther = false;
             foreach (var item in spawnedIslands)
             {
-                Bounds islandBounds = new Bounds(pos,island.Size*2);
-                Bounds itemBounds = new Bounds(item.transform.position,item.Size*2);
-                if (islandBounds.Intersects(itemBounds))
+                Bounds islandBounds = new Bounds(pos, island.Size * 2);
+                if (item.Bounds.Intersects(islandBounds))
                 {
                     Debug.Log("Inside other island: " + pos + " " + item.transform.position);
                     hitCount++;
-                    continue;
+                    intersactsWithOther = true;
+                    break;
                 }
             }
-            break;
+            if(!intersactsWithOther)
+                break;
         }
         return pos;
     }

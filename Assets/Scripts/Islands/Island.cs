@@ -10,6 +10,7 @@ public class Island : NetworkBehaviour
 {
     [SerializeField] private Vector3 size;
     public Vector3 Size { get => size; }
+    public Bounds Bounds { get => new Bounds(transform.position, Size * 2); }
     public bool Complete { get; private set; }
     public Island Next { get; private set; }
 
@@ -104,7 +105,6 @@ public class Island : NetworkBehaviour
             {
                 currentObjectives.Add(this.objectives[i]);
                 currentObjectives[currentObjectives.Count-1].OnComplete += OnObjectiveComplete;
-                currentObjectives[currentObjectives.Count - 1].Setup();
             }
             else
             {
@@ -132,6 +132,8 @@ public class Island : NetworkBehaviour
     {
         OnArrive?.Invoke();
         isStarted = true;
+        foreach (var objective in currentObjectives)
+            objective.Setup();
     }
 
     public void SpawnPlayers()

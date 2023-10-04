@@ -1681,6 +1681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   islands:
   - {fileID: 7616729375280096607, guid: ee811c4146155d346ad2c40e2d8231d8, type: 3}
+  - {fileID: 999765982184890556, guid: 8f300e9ea4e945147939fb3397a31937, type: 3}
   islandCount:
     min: 5
     max: 10
@@ -1878,7 +1879,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 7f04beb3956b20148889e57e3293e714, type: 2}
+  m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
 --- !u!4 &1049177687
 Transform:

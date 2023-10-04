@@ -16,7 +16,8 @@ public class MeshDestroy : MonoBehaviour
 
     public void DestroyMesh(float timeForPartsToDisappear = 5f)
     {
-        meshFilter = meshFilter ?? GetComponent<MeshFilter>();
+        if(meshFilter == null)
+            meshFilter = GetComponent<MeshFilter>();
         var originalMesh = meshFilter.mesh;
         originalMesh.RecalculateBounds();
         var parts = new List<PartMesh>();
