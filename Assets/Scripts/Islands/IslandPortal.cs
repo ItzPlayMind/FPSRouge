@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 
 public class IslandPortal : MonoBehaviour
@@ -7,6 +8,7 @@ public class IslandPortal : MonoBehaviour
     public System.Action OnEnter;
     [SerializeField] private Transform point;
     [SerializeField] private Camera cam;
+    [SerializeField] private float maxPortalRenderDistance = 25f;
     [SerializeField] private MeshRenderer portalRenderer;
 
 
@@ -23,6 +25,27 @@ public class IslandPortal : MonoBehaviour
             OnEnter?.Invoke();
             playerController.SetPosition(targetIsland.point.position);
             playerController.SetRotation(targetIsland.point.rotation);
+        }
+    }
+
+    private void Update()
+    {
+        float distanceToPlayer = Vector3.Distance(NetworkManager.Singleton.LocalClient.PlayerObject.transform.position, transform.position);
+        if (distanceToPlayer <= maxPortalRenderDistance)
+        {
+            if (!portalRenderer.gameObject.activeSelf)
+            {
+                portalRenderer.gameObject.SetActive(true);
+                targetIsland?.cam?.gameObject.SetActive(true);
+            }
+        }
+        else
+        {
+            if (portalRenderer.gameObject.activeSelf)
+            {
+                portalRenderer.gameObject.SetActive(false);
+                targetIsland?.cam?.gameObject.SetActive(false);
+            }
         }
     }
 

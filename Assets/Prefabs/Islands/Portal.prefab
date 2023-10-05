@@ -188,6 +188,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   point: {fileID: 6786267476530136961}
   cam: {fileID: 465606501912824553}
+  maxPortalRenderDistance: 25
   portalRenderer: {fileID: 4189001629977124728}
 --- !u!1 &3116167642563592961
 GameObject:
